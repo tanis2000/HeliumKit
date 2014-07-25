@@ -9,14 +9,15 @@
 
 HeliumKit is a lightweight framework that sits between your web services and the business logic of your app.
 
-**WARNING!** HelimKit is still in **alpha** version and API might change any time.
+**WARNING!** HeliumKit is still in **alpha** version and API might change any time.
 
 It provides basic mapping to automate conversion from DTO coming from your web services into object models of your business domain. We decided to streamline the process by adopting some libraries and frameworks:
 
-- PromiseKit to manage all the async code
-- FMDB to store data in SQLite
-- Mantle to convert models to and from JSON representation
-- MTLFMDBAdapter to convert models into SQL statements to feed to FMDB
+- [PromiseKit](https://github.com/mxcl/PromiseKit) to manage all the async code
+- [FMDB](https://github.com/ccgus/fmdb) to store data in SQLite
+- [Mantle](https://github.com/Mantle/Mantle) to convert models to and from JSON representation
+- [MTLFMDBAdapter](https://github.com/tanis2000/MTLFMDBAdapter) to convert models into SQL statements to feed to FMDB
+- [AFNetworking](https://github.com/AFNetworking/AFNetworking) to manage web service API calls
 
 The main focus is to keep this framework as lightweight as possible and at the same time make it flexible enough for you to craft the perfect solution to your data transfer and storage layer. Many ideas come from RestKit as I've been using that framework for commercial apps before. But I've never been fond of Core Data as the storage architecture. I'm way too used to good old SQL statements and I can't live with the threading issues that you have to fight against when using Core Data. Core Data is great, but it's not for me.
 
