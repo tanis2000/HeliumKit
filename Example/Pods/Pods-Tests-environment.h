@@ -1,0 +1,188 @@
+
+// To check if a library is compiled with CocoaPods you
+// can use the `COCOAPODS` macro definition which is
+// defined in the xcconfigs so it is available in
+// headers also when they are imported in the client
+// project.
+
+
+// AFNetworking
+#define COCOAPODS_POD_AVAILABLE_AFNetworking
+#define COCOAPODS_VERSION_MAJOR_AFNetworking 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking 1
+
+// AFNetworking/NSURLConnection
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLConnection
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLConnection 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection 1
+
+// AFNetworking/NSURLSession
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLSession
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLSession 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession 1
+
+// AFNetworking/Reachability
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Reachability
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Reachability 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Reachability 1
+
+// AFNetworking/Security
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Security
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Security 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Security 1
+
+// AFNetworking/Serialization
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Serialization
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Serialization 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 1
+
+// AFNetworking/UIKit
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_UIKit
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_UIKit 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
+
+// ChuzzleKit
+#define COCOAPODS_POD_AVAILABLE_ChuzzleKit
+#define COCOAPODS_VERSION_MAJOR_ChuzzleKit 1
+#define COCOAPODS_VERSION_MINOR_ChuzzleKit 0
+#define COCOAPODS_VERSION_PATCH_ChuzzleKit 4
+
+// Expecta
+#define COCOAPODS_POD_AVAILABLE_Expecta
+#define COCOAPODS_VERSION_MAJOR_Expecta 0
+#define COCOAPODS_VERSION_MINOR_Expecta 3
+#define COCOAPODS_VERSION_PATCH_Expecta 1
+
+// Expecta+Snapshots
+#define COCOAPODS_POD_AVAILABLE_Expecta_Snapshots
+#define COCOAPODS_VERSION_MAJOR_Expecta_Snapshots 1
+#define COCOAPODS_VERSION_MINOR_Expecta_Snapshots 2
+#define COCOAPODS_VERSION_PATCH_Expecta_Snapshots 1
+
+// FBSnapshotTestCase
+#define COCOAPODS_POD_AVAILABLE_FBSnapshotTestCase
+#define COCOAPODS_VERSION_MAJOR_FBSnapshotTestCase 1
+#define COCOAPODS_VERSION_MINOR_FBSnapshotTestCase 1
+#define COCOAPODS_VERSION_PATCH_FBSnapshotTestCase 0
+
+// FMDB
+#define COCOAPODS_POD_AVAILABLE_FMDB
+#define COCOAPODS_VERSION_MAJOR_FMDB 2
+#define COCOAPODS_VERSION_MINOR_FMDB 3
+#define COCOAPODS_VERSION_PATCH_FMDB 0
+
+// FMDB/common
+#define COCOAPODS_POD_AVAILABLE_FMDB_common
+#define COCOAPODS_VERSION_MAJOR_FMDB_common 2
+#define COCOAPODS_VERSION_MINOR_FMDB_common 3
+#define COCOAPODS_VERSION_PATCH_FMDB_common 0
+
+// FMDB/standard
+#define COCOAPODS_POD_AVAILABLE_FMDB_standard
+#define COCOAPODS_VERSION_MAJOR_FMDB_standard 2
+#define COCOAPODS_VERSION_MINOR_FMDB_standard 3
+#define COCOAPODS_VERSION_PATCH_FMDB_standard 0
+
+// HeliumKit
+#define COCOAPODS_POD_AVAILABLE_HeliumKit
+#define COCOAPODS_VERSION_MAJOR_HeliumKit 0
+#define COCOAPODS_VERSION_MINOR_HeliumKit 1
+#define COCOAPODS_VERSION_PATCH_HeliumKit 0
+
+// MTLFMDBAdapter
+#define COCOAPODS_POD_AVAILABLE_MTLFMDBAdapter
+#define COCOAPODS_VERSION_MAJOR_MTLFMDBAdapter 0
+#define COCOAPODS_VERSION_MINOR_MTLFMDBAdapter 1
+#define COCOAPODS_VERSION_PATCH_MTLFMDBAdapter 0
+
+// Mantle
+#define COCOAPODS_POD_AVAILABLE_Mantle
+#define COCOAPODS_VERSION_MAJOR_Mantle 1
+#define COCOAPODS_VERSION_MINOR_Mantle 5
+#define COCOAPODS_VERSION_PATCH_Mantle 0
+
+// Mantle/extobjc
+#define COCOAPODS_POD_AVAILABLE_Mantle_extobjc
+#define COCOAPODS_VERSION_MAJOR_Mantle_extobjc 1
+#define COCOAPODS_VERSION_MINOR_Mantle_extobjc 5
+#define COCOAPODS_VERSION_PATCH_Mantle_extobjc 0
+
+// OMGHTTPURLRQ
+#define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ 1
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ 1
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ 4
+
+// OMGHTTPURLRQ/RQ
+#define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ_RQ
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_RQ 1
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_RQ 1
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_RQ 4
+
+// OMGHTTPURLRQ/UserAgent
+#define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ_UserAgent
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_UserAgent 1
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_UserAgent 1
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_UserAgent 4
+
+// PromiseKit
+#define COCOAPODS_POD_AVAILABLE_PromiseKit
+#define COCOAPODS_VERSION_MAJOR_PromiseKit 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit 13
+
+// PromiseKit/Foundation
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Foundation
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Foundation 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Foundation 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Foundation 13
+
+// PromiseKit/UIAnimation
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIAnimation
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIAnimation 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIAnimation 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIAnimation 13
+
+// PromiseKit/UIKit
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIKit
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIKit 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIKit 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIKit 13
+
+// PromiseKit/base
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_base
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_base 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_base 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_base 13
+
+// PromiseKit/defaults
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_defaults
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_defaults 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_defaults 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_defaults 13
+
+// PromiseKit/private
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_private
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_private 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_private 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_private 13
+
+// PromiseKit/timing
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_timing
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_timing 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_timing 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_timing 13
+
+// Specta
+#define COCOAPODS_POD_AVAILABLE_Specta
+#define COCOAPODS_VERSION_MAJOR_Specta 0
+#define COCOAPODS_VERSION_MINOR_Specta 2
+#define COCOAPODS_VERSION_PATCH_Specta 1
+

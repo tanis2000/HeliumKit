@@ -1,0 +1,105 @@
+PODS:
+  - AFNetworking (2.3.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.3.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.3.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.3.1)
+  - AFNetworking/Security (2.3.1)
+  - AFNetworking/Serialization (2.3.1)
+  - AFNetworking/UIKit (2.3.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - ChuzzleKit (1.0.4)
+  - Expecta (0.3.1)
+  - Expecta+Snapshots (1.2.1):
+    - Expecta
+    - FBSnapshotTestCase
+  - FBSnapshotTestCase (1.1)
+  - FMDB (2.3):
+    - FMDB/standard
+  - FMDB/common (2.3)
+  - FMDB/standard (2.3):
+    - FMDB/common
+  - HeliumKit (0.1.0):
+    - AFNetworking (~> 2.3)
+    - FMDB (~> 2.3)
+    - Mantle (~> 1.5)
+    - MTLFMDBAdapter (~> 0.1)
+    - PromiseKit (~> 0.9)
+  - Mantle (1.5):
+    - Mantle/extobjc
+  - Mantle/extobjc (1.5)
+  - MTLFMDBAdapter (0.1.0):
+    - FMDB (~> 2.3)
+    - Mantle (~> 1.5)
+  - OMGHTTPURLRQ (1.1.4):
+    - ChuzzleKit
+    - OMGHTTPURLRQ/RQ
+    - OMGHTTPURLRQ/UserAgent
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/RQ (1.1.4):
+    - ChuzzleKit
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (1.1.4):
+    - ChuzzleKit
+    - OMGHTTPURLRQ/UserAgent
+  - PromiseKit (0.9.13):
+    - PromiseKit/defaults
+  - PromiseKit/base (0.9.13)
+  - PromiseKit/defaults (0.9.13):
+    - PromiseKit/Foundation
+    - PromiseKit/timing
+    - PromiseKit/UIAnimation
+    - PromiseKit/UIKit
+  - PromiseKit/Foundation (0.9.13):
+    - ChuzzleKit
+    - OMGHTTPURLRQ
+    - PromiseKit/base
+  - PromiseKit/private (0.9.13)
+  - PromiseKit/timing (0.9.13):
+    - PromiseKit/base
+  - PromiseKit/UIAnimation (0.9.13):
+    - PromiseKit/base
+    - PromiseKit/private
+  - PromiseKit/UIKit (0.9.13):
+    - PromiseKit/base
+    - PromiseKit/private
+  - Specta (0.2.1)
+
+DEPENDENCIES:
+  - Expecta
+  - Expecta+Snapshots
+  - FBSnapshotTestCase
+  - HeliumKit (from `../`)
+  - Specta (~> 0.2.1)
+
+EXTERNAL SOURCES:
+  HeliumKit:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  ChuzzleKit: b47a96cb59dfb0b972cd539b8cc1e66c97b20f42
+  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
+  Expecta+Snapshots: 30c28e3d8104665ee70e32df1cfc030bb37a8a6c
+  FBSnapshotTestCase: 9053afee1d66b4c7c313fcb0ae582a5e47bea9d0
+  FMDB: 31ec26773c7f7b7890a6038235a1f2bbd933a7cb
+  HeliumKit: eb415c17a60d33ac6d56eca48d878233c2b55335
+  Mantle: c67a7e45e14196ed42b2a7cbb98ff6a9920e6b92
+  MTLFMDBAdapter: c3e76edae146ca8549f9c0dd6cdb429096b93484
+  OMGHTTPURLRQ: ca928b53ae60cb4cc078d8f7201f4f647f435351
+  PromiseKit: b640456089cc366a69cdcd690f7fe5f757184c92
+  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+
+COCOAPODS: 0.33.1

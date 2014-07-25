@@ -1,0 +1,2 @@
+PODS_TESTS_PROMISEKIT_GCC_PREPROCESSOR_DEFINITIONS = $(inherited) PMK_FOUNDATION=1 $(inherited) PMK_UIANIMATION=1 $(inherited) PMK_UIKIT=1 $(inherited) PMK_TIMING=1
+PODS_TESTS_PROMISEKIT_OTHER_LDFLAGS = -framework Foundation -framework UIKit -weak_framework AssetsLibrary
