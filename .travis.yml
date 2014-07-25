@@ -1,5 +1,8 @@
 # reference: http://www.objc.io/issue-6/travis-ci.html
 
 language: objective-c
+node_js:
+- 0.10
 script:
+- ./start_server.sh
 - xctool test -workspace Example/HeliumKit.xcworkspace -scheme HeliumKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
