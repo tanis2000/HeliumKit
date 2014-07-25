@@ -2,5 +2,6 @@
 cd Server
 npm install
 node bin/www&
-curl http://localhost:3000/
+sleep 10
+curl http://localhost:4567/
 
