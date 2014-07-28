@@ -18,4 +18,23 @@ router.post('/users', function(req, res) {
 	});
 });
 
+router.get('/cachedusers', function(req, res) {
+	//console.log(req);
+	if (req.query.cacheKey == "CACHE1234") {
+		fs.readFile('fixtures/cacheresponse.json', function(err, data) {
+			if (err) throw err;
+			data = JSON.parse(data);
+			console.log(data);
+			res.json(data);
+		});
+	} else {
+		fs.readFile('fixtures/cachedusers.json', function(err, data) {
+			if (err) throw err;
+			data = JSON.parse(data);
+			console.log(data);
+			res.json(data);
+		});
+	}
+});
+
 module.exports = router;

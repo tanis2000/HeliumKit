@@ -10,6 +10,9 @@
 		02035D8C1986531A00A7C5F5 /* ALTUsersProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D8B1986531A00A7C5F5 /* ALTUsersProvider.m */; };
 		02035D8F1986535D00A7C5F5 /* ALTUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D8E1986535D00A7C5F5 /* ALTUser.m */; };
 		02035D921986567200A7C5F5 /* ALTBaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D911986567200A7C5F5 /* ALTBaseRequest.m */; };
+		02035D951986C32900A7C5F5 /* ALTCachedProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D941986C32900A7C5F5 /* ALTCachedProvider.m */; };
+		02035D981986C35A00A7C5F5 /* ALTCachedUsersProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D971986C35A00A7C5F5 /* ALTCachedUsersProvider.m */; };
+		02035D9B1986C5C300A7C5F5 /* ALTCachedResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 02035D9A1986C5C300A7C5F5 /* ALTCachedResponse.m */; };
 		4E72D487FAEE495482788459 /* libPods-HeliumKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C29BAF3670AE433AAC183236 /* libPods-HeliumKit.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -46,6 +49,12 @@
 		02035D8E1986535D00A7C5F5 /* ALTUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTUser.m; sourceTree = "<group>"; };
 		02035D901986567200A7C5F5 /* ALTBaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTBaseRequest.h; sourceTree = "<group>"; };
 		02035D911986567200A7C5F5 /* ALTBaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTBaseRequest.m; sourceTree = "<group>"; };
+		02035D931986C32900A7C5F5 /* ALTCachedProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTCachedProvider.h; sourceTree = "<group>"; };
+		02035D941986C32900A7C5F5 /* ALTCachedProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTCachedProvider.m; sourceTree = "<group>"; };
+		02035D961986C35A00A7C5F5 /* ALTCachedUsersProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTCachedUsersProvider.h; sourceTree = "<group>"; };
+		02035D971986C35A00A7C5F5 /* ALTCachedUsersProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTCachedUsersProvider.m; sourceTree = "<group>"; };
+		02035D991986C5C300A7C5F5 /* ALTCachedResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTCachedResponse.h; sourceTree = "<group>"; };
+		02035D9A1986C5C300A7C5F5 /* ALTCachedResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTCachedResponse.m; sourceTree = "<group>"; };
 		10956E9D28F84B5A9BE4B332 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		271AA7EBEAE04CC99B62BBCD /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E41E5403EE8471189270C36 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -174,6 +183,12 @@
 				02035D8E1986535D00A7C5F5 /* ALTUser.m */,
 				02035D901986567200A7C5F5 /* ALTBaseRequest.h */,
 				02035D911986567200A7C5F5 /* ALTBaseRequest.m */,
+				02035D931986C32900A7C5F5 /* ALTCachedProvider.h */,
+				02035D941986C32900A7C5F5 /* ALTCachedProvider.m */,
+				02035D961986C35A00A7C5F5 /* ALTCachedUsersProvider.h */,
+				02035D971986C35A00A7C5F5 /* ALTCachedUsersProvider.m */,
+				02035D991986C5C300A7C5F5 /* ALTCachedResponse.h */,
+				02035D9A1986C5C300A7C5F5 /* ALTCachedResponse.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -374,7 +389,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02035D951986C32900A7C5F5 /* ALTCachedProvider.m in Sources */,
+				02035D981986C35A00A7C5F5 /* ALTCachedUsersProvider.m in Sources */,
 				02035D921986567200A7C5F5 /* ALTBaseRequest.m in Sources */,
+				02035D9B1986C5C300A7C5F5 /* ALTCachedResponse.m in Sources */,
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 				02035D8F1986535D00A7C5F5 /* ALTUser.m in Sources */,
 				02035D8C1986531A00A7C5F5 /* ALTUsersProvider.m in Sources */,

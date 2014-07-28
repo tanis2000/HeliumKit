@@ -1,19 +1,20 @@
 //
-//  ALTUsersProvider.m
+//  ALTCachedUsersProvider.m
 //  HeliumKit
 //
 //  Created by Valerio Santinelli on 28/07/14.
 //  Copyright (c) 2014 Valerio Santinelli. All rights reserved.
 //
 
-#import "ALTUsersProvider.h"
+#import "ALTCachedUsersProvider.h"
 #import "ALTUser.h"
 #import <HeliumKit/ALTObjectMapping.h>
+#import "ALTCachedResponse.h"
 
-@implementation ALTUsersProvider
+@implementation ALTCachedUsersProvider
 
 - (NSString *)endPoint {
-    return [NSString stringWithFormat:@"%@%@", self.baseURL, @"users"];
+    return [NSString stringWithFormat:@"%@%@", self.baseURL, @"cachedusers"];
 }
 
 - (PMKPromise *)fetchObjectsFromDb {
@@ -29,9 +30,10 @@
 }
 
 - (NSArray *)objectMappings {
-    ALTObjectMapping *mapping = [ALTObjectMapping mappingForModel:ALTUser.class sourcePath:nil];
+    ALTObjectMapping *envMapping = [ALTObjectMapping mappingForModel:ALTCachedResponse.class sourcePath:nil];
+    ALTObjectMapping *userMapping = [ALTObjectMapping mappingForModel:ALTUser.class sourcePath:@"OutputList"];
     
-    return @[mapping];
+    return @[envMapping, userMapping];
 }
 
 @end

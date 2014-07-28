@@ -12,6 +12,7 @@
 #import "ALTUser.h"
 #import "ALTUsersProvider.h"
 #import "ALTBaseRequest.h"
+#import "ALTCachedUsersProvider.h"
 
 ALTDatabaseController *_database;
 AFHTTPRequestOperationManager *_manager;
@@ -137,6 +138,45 @@ describe(@"main tests", ^{
         });
         
     });
+    
+    
+    it(@"can store a json into db and cache the next request", ^AsyncBlock {
+        ALTCachedUsersProvider *provider = [[ALTCachedUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData).to.haveCountOf(2);
+            ALTUser *secondUser = freshData[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+        }).then(^{
+            request.cacheKey = @"CACHE1234";
+            provider.request = request;
+            [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+                // cachedData contains data already in the db
+                return freshData;
+            }).then(^(id mappingResult, NSArray *freshData) {
+                NSLog(@"%@", freshData);
+                expect(freshData).to.beKindOf(NSArray.class);
+                expect(freshData).to.haveCountOf(2);
+                ALTUser *secondUser = freshData[1];
+                expect(secondUser.name).to.equal(@"Steve Jobs");
+                done();
+            }).catch(^(NSError *error) {
+                NSLog(@"Failed with error: %@", [error localizedDescription]);
+                done();
+            });
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            done();
+        });
+        
+    });
+
 
 });
 

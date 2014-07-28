@@ -1,0 +1,17 @@
+{
+    "CacheKey": "CACHE1234",
+    "IsValid": 1,
+    "IsLocalValid": 0,
+    "OutputList": [
+        {
+            "email": "mymail@myprovider.com",
+            "id": 1,
+            "name": "Valerio Santinelli"
+        },
+        {
+            "email": "steve@myprovider.com",
+            "id": 2,
+            "name": "Steve Jobs"
+        }
+    ]
+}

@@ -67,11 +67,6 @@
     return nil;
 }
 
-- (ALTObjectMapping *)objectMapping {
-    NSAssert(NO, @"objectMapping should be overridden");
-    return nil;
-}
-
 - (PMKPromise *)deleteOrphans {
     NSAssert(NO, @"deleteOrphans has not been implemented");
     return nil;
@@ -93,6 +88,11 @@
 - (id)preProcessResult:(id)response
 {
     return response;
+}
+
+- (NSArray *) objectMappings {
+    NSAssert(NO, @"objectMappings should be overridden");
+    return @[];
 }
 
 /*
@@ -195,7 +195,7 @@
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
         //ALTObjectMapping *testMapping = [ALTObjectMapping mappingForModel:ALTGenericResponse.class sourcePath:nil];
-        _objectMappings = [NSArray arrayWithObjects:self.objectMapping, /*testMapping,*/ nil];
+        //_objectMappings = [NSArray arrayWithObjects:self.objectMapping, /*testMapping,*/ nil];
         ALTObjectMapper *mapper = [[ALTObjectMapper alloc] init];
         ALTDatabaseController *db = self.database;
         if (_skipDatabase) {
@@ -207,52 +207,7 @@
     }];
 }
 
-- (NSString *)loadFromDbCache:(MTLModel *)request additionalId:(NSString *)additionalId cacheKey:(NSString *)cacheKey
-{
-    if (additionalId == nil) {
-        additionalId = @"";
-    }
-    NSString *stmt = @"select * from cache where endpoint = ? and additionalid = ? and cachekey = ?";
-    NSArray *params = @[self.endPoint, additionalId, cacheKey];
-    NSArray *res = [_database rawQuerySync:stmt parameters:params];
-    if (res.count == 0) {
-        NSLog(@"There was a problem reading from the local cache with the following parameters: %@", params);
-        return nil;
-    }
-    NSDictionary *rs = [res objectAtIndex:0];
-    NSString *cachedData = [rs valueForKey:@"response"];
-    return cachedData;
-}
 
-- (void)saveToDbCache:(MTLModel *)request response:(NSDictionary *)response additionalId:(NSString *)additionalId cacheKey:(NSString *)cacheKey
-{
-    if (additionalId == nil) {
-        additionalId = @"";
-    }
-
-    // Remove old cached data
-    NSString *deleteStmt = @"delete from cache where endpoint = ? and additionalid = ? and cachekey = ?";
-    NSArray *deleteParams = @[self.endPoint, additionalId, cacheKey];
-    [_database rawQuerySync:deleteStmt parameters:deleteParams];
-    
-    
-    NSString *stmt = @"insert into cache (endpoint, additionalid, cachekey, response) values (?, ?, ?, ?)";
-    
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:response
-                                                       options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
-                                                         error:&error];
-    
-    if (! jsonData) {
-        NSLog(@"Got an error: %@", error);
-        @throw @"Cannot serialize request dictionary to JSON string";
-    }
-    NSString *responseString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-    
-    NSArray *params = @[self.endPoint, additionalId, cacheKey, responseString];
-    [_database rawQuerySync:stmt parameters:params];
-}
 
 - (PMKPromise *)downloadDataFromWS:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {

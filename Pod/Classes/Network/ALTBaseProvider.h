@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 @required
 - (NSString *)endPoint;
 - (PMKPromise *)fetchObjectsFromDb;
-- (ALTObjectMapping *)objectMapping;
+- (NSArray *)objectMappings;
 
 /**
  Override this method to preprocess the response from AFNetworking. As an example, you can use this to check for specific HTTP return codes or to manage cached responses on the database. We provide an example of the lattest in the test cases.
@@ -48,11 +48,10 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 @property(nonatomic, readonly) ALTDatabaseController *database;
 @property(nonatomic, readonly) AFHTTPRequestOperationManager *manager;
 @property(nonatomic, strong, readonly) NSString *baseURL;
-@property(nonatomic, readonly) NSArray *objectMappings;
+//@property(nonatomic, readonly) NSArray *objectMappings;
 
 @property(nonatomic) BOOL deleteOrphanedObjects;
 @property(nonatomic, copy) MTLModel<MTLJSONSerializing> *request;
-@property(nonatomic, copy) NSString *additionalId;
 
 /**
  If YES, nothing will be written to SQLite. Objects will be parsed and their model representations will be available through `fetchData`. Default is NO.
