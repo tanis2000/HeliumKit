@@ -18,9 +18,13 @@
 
 - (PMKPromise *)fetchObjectsFromDb {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
-        [self.database fetch:@"user" returnClass:self.objectMapping.modelClass].then(^(id res) {
-            fulfiller(res);
-        });
+        if (!self.skipDatabase) {
+            [self.database fetch:@"user" returnClass:self.objectMapping.modelClass].then(^(id res) {
+                fulfiller(res);
+            });
+        } else {
+            fulfiller(nil);
+        }
     }];
 }
 

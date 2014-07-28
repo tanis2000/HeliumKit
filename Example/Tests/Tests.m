@@ -7,6 +7,7 @@
 //
 
 #import <HeliumKit/ALTDatabaseController.h>
+#import <HeliumKit/ALTMappingResult.h>
 #import <AFNetworking/AFNetworking.h>
 #import "ALTUser.h"
 #import "ALTUsersProvider.h"
@@ -34,20 +35,19 @@ describe(@"main tests", ^{
         NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Test.sqlite"];
         
         _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
-                                                          creationBlock:^(FMDatabase *db) {
+                                                          creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists user "
                                                                "(userId text unique, name text, email text)"];
                                                           }];
         
-        /*
-        [_database runFetchForClass:ALTLabel.class fetchBlock:^FMResultSet *(FMDatabase *database) {
-            return [database executeQuery:@"select * from label limit 1"];
-        }].then(^(NSArray *res){
-            NSLog(@"%@", res);
-        });
-         */
     });
-    
+
+    afterEach(^{
+        [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
+            [database executeUpdate:@"drop table if exists user"];
+        }];
+    });
+
     it(@"can store json into db", ^AsyncBlock {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
@@ -68,40 +68,77 @@ describe(@"main tests", ^{
         });
 
     });
-});
-
-/*
-describe(@"these will fail", ^{
-
-    it(@"can do maths", ^{
-        expect(1).to.equal(2);
-    });
-
-    it(@"can read", ^{
-        expect(@"number").to.equal(@"string");
+    
+    it(@"can store and retrieve a class from the database", ^AsyncBlock {
+        [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
+            [database executeUpdate:@"insert into user (userid, name, email) values (?, ?, ?)" withArgumentsInArray:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]];
+            *rollback = NO;
+        }].then(^(id res) {
+            NSLog(@"%@", res);
+            id res2 = [_database runFetchForClass:ALTUser.class fetchBlock:^FMResultSet *(FMDatabase *database) {
+                return [database executeQuery:@"select * from user where userId = 999"];
+            }];
+            return res2;
+        }).then(^(NSArray *res){
+            NSLog(@"%@", res);
+            expect(res).toNot.beNil();
+            expect(res).to.haveCountOf(1);
+            if (res != nil && res.count > 0) {
+                ALTUser *user = res[0];
+                expect(user).to.notTo.beNil();
+                expect(user.name).to.equal(@"Valerio Santinelli");
+            }
+            done();
+        });;
     });
     
-    it(@"will wait and fail", ^AsyncBlock {
-        
-    });
-});
-
-describe(@"these will pass", ^{
-    
-    it(@"can do maths", ^{
-        expect(1).beLessThan(23);
-    });
-    
-    it(@"can read", ^{
-        expect(@"team").toNot.contain(@"I");
-    });
-    
-    it(@"will wait and succeed", ^AsyncBlock {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    it(@"can load json with the POST method", ^AsyncBlock {
+        ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodPOST].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData).to.haveCountOf(2);
+            ALTUser *secondUser = freshData[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
             done();
         });
+        
     });
+
+    it(@"can load a json without storing it in the database", ^AsyncBlock {
+        ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:nil andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        provider.skipDatabase = YES;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData will always contain zero results as we're skipping the database calls
+            return freshData;
+        }).then(^(ALTMappingResult *mappingResult, NSArray *freshData) {
+            NSLog(@"%@", mappingResult);
+            expect(mappingResult).to.beKindOf(ALTMappingResult.class);
+            NSDictionary *d = mappingResult.dictionary;
+            expect(d).to.haveCountOf(1);
+            NSArray *ar = [d objectForKey:ALTUser.class];
+            expect(ar).to.haveCountOf(2);
+            ALTUser *secondUser = ar[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            done();
+        });
+        
+    });
+
 });
-*/
+
 
 SpecEnd

@@ -80,10 +80,19 @@
 - (PMKPromise *)fetchData:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
         id fresh = [self downloadDataFromWS:method];
-        [self fetchObjectsFromDb].then(^(id cached) {
-            fulfiller(PMKManifold(cached, fresh));
-        });
+        if (_skipDatabase) {
+            fulfiller(PMKManifold([NSNull null], fresh));
+        } else {
+            [self fetchObjectsFromDb].then(^(id cached) {
+                fulfiller(PMKManifold(cached, fresh));
+            });
+        }
     }];
+}
+
+- (id)preProcessResult:(id)response
+{
+    return response;
 }
 
 /*
@@ -188,7 +197,11 @@
         //ALTObjectMapping *testMapping = [ALTObjectMapping mappingForModel:ALTGenericResponse.class sourcePath:nil];
         _objectMappings = [NSArray arrayWithObjects:self.objectMapping, /*testMapping,*/ nil];
         ALTObjectMapper *mapper = [[ALTObjectMapper alloc] init];
-        [mapper mapDictionary:responseObject withMappings:self.objectMappings inDatabase:self.database].then(^(id result) {
+        ALTDatabaseController *db = self.database;
+        if (_skipDatabase) {
+            db = nil;
+        }
+        [mapper mapDictionary:responseObject withMappings:self.objectMappings inDatabase:db].then(^(id result) {
             fulfiller(result);
         });
     }];
@@ -244,14 +257,17 @@
 - (PMKPromise *)downloadDataFromWS:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
         [self callWS:method].then(^(id responseObject, AFHTTPRequestOperation *operation) {
-            return responseObject;
+            return [self preProcessResult:responseObject];
         }).then(^(id responseObject) {
             return [self mapObjects:responseObject];
         }).then(^(id mappingResult) {
-            [self fetchObjectsFromDb].then(^(id res) {
-                fulfiller(PMKManifold(mappingResult, res));
-                //fulfiller(res);
-            });
+            if (_skipDatabase) {
+                fulfiller(mappingResult);
+            } else {
+                [self fetchObjectsFromDb].then(^(id res) {
+                    fulfiller(PMKManifold(mappingResult, res));
+                });
+            }
         }).catch(^(NSError *error) {
             rejecter(error);
         });

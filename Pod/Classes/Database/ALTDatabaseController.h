@@ -10,7 +10,7 @@
 #import <FMDB/FMDB.h>
 #import <PromiseKit/PromiseKit.h>
 
-typedef void (^ALTDatabaseUpdateBlock)(FMDatabase *database);
+typedef void (^ALTDatabaseUpdateBlock)(FMDatabase *database, BOOL *rollback);
 typedef FMResultSet *(^ALTDatabaseFetchBlock)(FMDatabase *database);
 typedef void (^ALTDatabaseCompletionBlock)(void);
 

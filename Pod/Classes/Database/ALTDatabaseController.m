@@ -41,7 +41,7 @@
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
         [_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-            databaseBlock(db);
+            databaseBlock(db, rollback);
             fullfiller(nil);
         }];
     }];
@@ -54,6 +54,7 @@
             FMResultSet *resultSet = databaseBlock(db);
             NSArray *fetchedObjects = [self databaseObjectsWithResultSet:resultSet
                                                                    class:returnClass];
+            [resultSet close];
             fullfiller(fetchedObjects);
         }];
     }];
