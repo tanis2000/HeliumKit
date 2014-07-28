@@ -77,9 +77,9 @@
     return nil;
 }
 
-- (PMKPromise *)fetchData {
+- (PMKPromise *)fetchData:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
-        id fresh = [self downloadDataFromWS];
+        id fresh = [self downloadDataFromWS:method];
         [self fetchObjectsFromDb].then(^(id cached) {
             fulfiller(PMKManifold(cached, fresh));
         });
@@ -241,38 +241,9 @@
     [_database rawQuerySync:stmt parameters:params];
 }
 
-- (NSDictionary *)manageCache:(NSDictionary *)responseObject
-{
-    NSDictionary *res = responseObject;
-    if (responseObject != nil) {
-        BOOL valid = [[responseObject objectForKey:@"IsValidLocalCache"] boolValue];
-        NSString *cacheKey = [responseObject objectForKey:@"CacheKey"];
-        if (valid) {
-            NSString *data = [self loadFromDbCache:_request additionalId:_additionalId cacheKey:cacheKey];
-            if (data == nil) {
-                return res;
-            }
-            NSError *error = nil;
-            res = [NSJSONSerialization JSONObjectWithData:[data dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-            if (res == nil) {
-                @throw @"Error converting JSON string to data";
-            }
-        } else {
-            [self saveToDbCache:_request response:responseObject additionalId:_additionalId cacheKey:cacheKey];
-        }
-    }
-    return res;
-}
-
-- (PMKPromise *)downloadDataFromWS {
+- (PMKPromise *)downloadDataFromWS:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
-        self.callWS.then(^(id responseObject, AFHTTPRequestOperation *operation) {
-            responseObject = [self manageCache:responseObject];
-            if (self.deleteOrphanedObjects) {
-                [self deleteOrphans].then(^() {
-                    return responseObject;
-                });
-            }
+        [self callWS:method].then(^(id responseObject, AFHTTPRequestOperation *operation) {
             return responseObject;
         }).then(^(id responseObject) {
             return [self mapObjects:responseObject];
@@ -287,12 +258,31 @@
     }];
 }
 
-- (PMKPromise *)callWS {
+- (NSString *)requestType:(ALTHTTPMethod)method {
+    if (method == ALTHTTPMethodGET) {
+        return @"GET";
+    } else if (method == ALTHTTPMethodPOST) {
+        return @"POST";
+    } else if (method == ALTHTTPMethodHEAD) {
+        return @"HEAD";
+    } else if (method == ALTHTTPMethodPUT) {
+        return @"PUT";
+    } else if (method == ALTHTTPMethodPATCH) {
+        return @"PATCH";
+    } else if (method == ALTHTTPMethodDELETE) {
+        return @"DELETE";
+    } else {
+        @throw @"HTTP method not supported";
+    }
+}
+
+- (PMKPromise *)callWS:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
         NSLog(@"API: %@", self.endPoint);
         NSDictionary *serializedRequest = [MTLJSONAdapter JSONDictionaryFromModel:self.request];
         NSLog(@"Serialized request: %@", serializedRequest);
-        [self.manager POST:self.endPoint parameters:serializedRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableURLRequest *request = [self.manager.requestSerializer requestWithMethod:[self requestType:method] URLString:[[NSURL URLWithString:self.endPoint relativeToURL:self.manager.baseURL] absoluteString] parameters:serializedRequest error:nil];
+        AFHTTPRequestOperation *operation = [self.manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Request completed: %@", operation.request.description);
             NSLog(@"Response: %@", responseObject);
             fulfiller(PMKManifold(responseObject, operation));
@@ -303,6 +293,19 @@
             rejecter(error);
         }];
         
+        [self.manager.operationQueue addOperation:operation];
+/*
+        [self.manager POST:self.endPoint parameters:serializedRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Request completed: %@", operation.request.description);
+            NSLog(@"Response: %@", responseObject);
+            fulfiller(PMKManifold(responseObject, operation));
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Request: %@", operation.request);
+            NSLog(@"Request params: %@", serializedRequest);
+            NSLog(@"Error: %@", error);
+            rejecter(error);
+        }];
+        */
     }];
 }
 

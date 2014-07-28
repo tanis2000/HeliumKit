@@ -13,6 +13,15 @@
 
 @class ALTObjectMapping;
 
+typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
+    ALTHTTPMethodGET = 0,
+    ALTHTTPMethodPOST = 1,
+    ALTHTTPMethodHEAD = 2,
+    ALTHTTPMethodPUT = 3,
+    ALTHTTPMethodPATCH = 4,
+    ALTHTTPMethodDELETE = 5,
+};
+
 @protocol ALTBaseProviderDelegate <NSObject>
 
 @required
@@ -41,7 +50,7 @@
                andRequestOperationManager:(AFHTTPRequestOperationManager *)manager
                                andBaseURL:(NSString *)baseURL;
 
-- (PMKPromise *)fetchData;
-- (PMKPromise *)callWS;
+- (PMKPromise *)fetchData:(ALTHTTPMethod)method;
+- (PMKPromise *)callWS:(ALTHTTPMethod)method;
 - (PMKPromise *)mapObjects:(NSDictionary *)responseObject;
 @end
