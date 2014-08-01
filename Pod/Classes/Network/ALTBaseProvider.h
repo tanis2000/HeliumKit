@@ -25,8 +25,26 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 @protocol ALTBaseProviderDelegate <NSObject>
 
 @required
+
+/**
+ The end point of the remote service we are calling
+ 
+ @return an NSString containing the end pint of the remote service
+ */
 - (NSString *)endPoint;
+
+/**
+ Performs a SQL query on the database to retrieve the instances of the model of this provider. This can actually retrieve anything from SQLite and return an NSArray of models. This is usually used to return data after the remote service has been consumed and the data consolidated in the database. It can also be used to retrieve cached data before invoking the remote service.
+ 
+ @return an NSArray of models
+ */
 - (PMKPromise *)fetchObjectsFromDb;
+
+/**
+ The actual mappings of the remote service.
+ 
+ @return an NSArray of `ALTObjectMapping`
+ */
 - (NSArray *)objectMappings;
 
 /**
@@ -42,12 +60,24 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 
 @interface ALTBaseProvider : NSObject<ALTBaseProviderDelegate>
 
+/**
+ The database controller that manages the queue where all fo the SQL statements are being executed
+ */
 @property(nonatomic, readonly) ALTDatabaseController *database;
-@property(nonatomic, readonly) AFHTTPRequestOperationManager *manager;
-@property(nonatomic, strong, readonly) NSString *baseURL;
-//@property(nonatomic, readonly) NSArray *objectMappings;
 
-@property(nonatomic) BOOL deleteOrphanedObjects;
+/**
+ The AFNetworking `AFHTTPRequestOperationManager` used by this class to perform all of the remote requests.
+ */
+@property(nonatomic, readonly) AFHTTPRequestOperationManager *manager;
+
+/**
+ The base URL of the service being called
+ */
+@property(nonatomic, strong, readonly) NSString *baseURL;
+
+/**
+ The model of the request being serialized by AFNetworking when calling the remote end point.
+ */
 @property(nonatomic, copy) MTLModel<MTLJSONSerializing> *request;
 
 /**
@@ -55,11 +85,40 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
  */
 @property(nonatomic) BOOL skipDatabase;
 
+/**
+ Initialize the provider
+ 
+ @param database an `ALTDatabaseController` instance used to perform all of the operations on the database
+ @param manager  an `AFHTTPRequestOperationManager` instance used to perform all of the remote calls
+ @param baseURL  an NSString with the base URL of the remote service
+ 
+ @return an instance of `ALTBaseProvider`
+ */
 -(instancetype)initWithDatabaseController:(ALTDatabaseController *)database
                andRequestOperationManager:(AFHTTPRequestOperationManager *)manager
                                andBaseURL:(NSString *)baseURL;
 
+/**
+ Call the remote end point, retrieve the data, save it to the database and pass it over to the caller.
+ 
+ The actual flow is the following (and can be overridden):
+ 
+ 1. start a request for the remote end point
+ 2. looks for the data in the database and returns a cached version if available
+ 3. once remote end point has finished transferring data, we pre-process it and hand it over to the caller
+ 4. the processed data is also being saved to the database
+ 5. the saved models are being fetched back from the database and handled back to the caller. 
+ 
+ What happens is that 3 kind of data are made available to the caller in an async fashion using promises. 
+ The first dataset is the cached data stored in the database before the call to the remote end point. It's possible to skip this step by setting self.skipDatabase to YES.
+ The second dataset is the actual data returned by the remote end point. That data is only preprocessed and converted to the respective models, following relationships between the models, but they're still just in memory representation of the received data.
+ The third dataset is the model actually fetched from the database after the preprocessed data has been saved to SQLite.
+ 
+ @param method an `ALTHTTPMethod` for the kind of HTTP method to use (GET, POST, etc...)
+ 
+ @return an instance of PMKPromise.
+ */
 - (PMKPromise *)fetchData:(ALTHTTPMethod)method;
-- (PMKPromise *)callWS:(ALTHTTPMethod)method;
-- (PMKPromise *)mapObjects:(NSDictionary *)responseObject;
+
+
 @end
