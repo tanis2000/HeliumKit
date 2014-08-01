@@ -30,16 +30,13 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 - (NSArray *)objectMappings;
 
 /**
- Override this method to preprocess the response from AFNetworking. As an example, you can use this to check for specific HTTP return codes or to manage cached responses on the database. We provide an example of the lattest in the test cases.
+ Override this method to preprocess the response from AFNetworking. As an example, you can use this to check for specific HTTP return codes or to manage cached responses on the database. We provide an example of the lattest in the test cases. You can also use this to delete orphaned objects.
  
  @param response the response as returned by AFNetworking
  
  @return the response modified by your code (or you can return the original response which is the default behavior)
  */
 - (id)preProcessResult:(id)response;
-
-@optional
-- (PMKPromise *)deleteOrphans;
 
 @end
 

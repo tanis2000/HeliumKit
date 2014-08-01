@@ -67,11 +67,6 @@
     return nil;
 }
 
-- (PMKPromise *)deleteOrphans {
-    NSAssert(NO, @"deleteOrphans has not been implemented");
-    return nil;
-}
-
 - (PMKPromise *)fetchData:(ALTHTTPMethod)method {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
         id fresh = [self downloadDataFromWS:method];
