@@ -60,6 +60,19 @@
     }];
 }
 
+- (NSArray *)runFetchForClassSync:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock
+{
+    __block NSArray *fetchedObjects = [NSArray array];
+    [_queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *resultSet = databaseBlock(db);
+        fetchedObjects = [self databaseObjectsWithResultSet:resultSet
+                                                               class:returnClass];
+        [resultSet close];
+    }];
+    return fetchedObjects;
+}
+
+
 - (NSArray *)databaseObjectsWithResultSet:(FMResultSet *)resultSet
                                     class:(Class)class
 {

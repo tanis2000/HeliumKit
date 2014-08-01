@@ -13,6 +13,9 @@
 #import "ALTUsersProvider.h"
 #import "ALTBaseRequest.h"
 #import "ALTCachedUsersProvider.h"
+#import "ALTUserWithRepo.h"
+#import "ALTRepo.h"
+#import "ALTUserWithRepoProvider.h"
 
 ALTDatabaseController *_database;
 AFHTTPRequestOperationManager *_manager;
@@ -39,6 +42,8 @@ describe(@"main tests", ^{
                                                           creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists user "
                                                                "(userId text unique, name text, email text)"];
+                                                              [db executeUpdate:@"create table if not exists repository "
+                                                               "(id text unique, userId text, url text)"];
                                                           }];
         
     });
@@ -46,6 +51,7 @@ describe(@"main tests", ^{
     afterEach(^{
         [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
             [database executeUpdate:@"drop table if exists user"];
+            [database executeUpdate:@"drop table if exists repository"];
         }];
     });
 
@@ -65,6 +71,7 @@ describe(@"main tests", ^{
             done();
         }).catch(^(NSError *error) {
             NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
             done();
         });
 
@@ -109,6 +116,7 @@ describe(@"main tests", ^{
             done();
         }).catch(^(NSError *error) {
             NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
             done();
         });
         
@@ -134,6 +142,7 @@ describe(@"main tests", ^{
             done();
         }).catch(^(NSError *error) {
             NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
             done();
         });
         
@@ -172,6 +181,36 @@ describe(@"main tests", ^{
             });
         }).catch(^(NSError *error) {
             NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
+            done();
+        });
+        
+    });
+    
+    it(@"can store related json data into db", ^AsyncBlock {
+        ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData).to.haveCountOf(2);
+            ALTUserWithRepo *secondUser = freshData[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+            __block NSArray *repos;
+            repos = [_database runFetchForClassSync:ALTRepo.class fetchBlock:^FMResultSet *(FMDatabase *database) {
+                return [database executeQuery:@"select * from repository order by id"];
+            }];
+            expect(repos).to.haveCountOf(4);
+            ALTRepo *repo = repos[0];
+            expect(repo.url).to.equal(@"http://www.github.com/tanis2000/repo1");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
             done();
         });
         

@@ -37,4 +37,12 @@ router.get('/cachedusers', function(req, res) {
 	}
 });
 
+router.get('/userswithrepo', function(req, res) {
+	fs.readFile('fixtures/users_with_relations.json', function(err, data) {
+		if (err) throw err;
+		data = JSON.parse(data);
+		res.json(data);
+	});
+});
+
 module.exports = router;

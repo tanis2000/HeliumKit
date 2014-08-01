@@ -63,6 +63,18 @@ typedef void (^ALTDatabaseCompletionBlock)(void);
 - (PMKPromise *)runFetchForClass:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock;
 
 /**
+ Execute a query block on the database and returns an NSArray of model objects.
+ This is the same as `runFetchForClass` but is run synchronously.
+ Model objects should be subclasses of `MTLModel` and implement the `MTLFMDBSerializing` protocol
+ 
+ @param returnClass   the class of the objects returned from the database query
+ @param databaseBlock a block containing a query to run against the database that must return an `FMResultSet`
+ 
+ @return an NSArray of objects of class returnClass
+ */
+- (NSArray *)runFetchForClassSync:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock;
+
+/**
  Helper to run a SQL SELECT * statement against a table.
  
  @param tableName   the name of the table
