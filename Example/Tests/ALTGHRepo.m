@@ -1,28 +1,28 @@
 //
-//  ALTUser.m
+//  ALTGHRepo.m
 //  HeliumKit
 //
 //  Created by Valerio Santinelli on 28/07/14.
 //  Copyright (c) 2014 Valerio Santinelli. All rights reserved.
 //
 
-#import "ALTRepo.h"
+#import "ALTGHRepo.h"
 
-@implementation ALTRepo
+@implementation ALTGHRepo
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{
              @"repoId": @"id",
-             @"userId": @"user_id",
-             @"url": @"url",
+             @"repoName": @"name",
+             @"repoUrl": @"url",
              };
 }
 
 +(NSDictionary *)FMDBColumnsByPropertyKey {
     return @{
              @"repoId": @"id",
-             @"userId": @"userId",
-             @"url": @"url",
+             @"repoName": @"name",
+             @"repoUrl": @"url",
              };
 }
 
@@ -31,6 +31,6 @@
 }
 
 +(NSString *)FMDBTableName {
-    return @"repository";
+    return @"ghrepo";
 }
 @end

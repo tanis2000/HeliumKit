@@ -16,6 +16,8 @@
 #import "ALTUserWithRepo.h"
 #import "ALTRepo.h"
 #import "ALTUserWithRepoProvider.h"
+#import "ALTGHRepo.h"
+#import "ALTGHRepoProvider.h"
 
 ALTDatabaseController *_database;
 AFHTTPRequestOperationManager *_manager;
@@ -220,4 +222,61 @@ describe(@"main tests", ^{
 });
 
 
+SpecEnd
+
+SpecBegin(GitHubTests)
+
+describe(@"GitHub API tests", ^{
+    beforeEach(^{
+        _manager = [AFHTTPRequestOperationManager manager];
+        _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [_manager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
+        [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        
+        // Grab the Documents folder
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        // Sets the database filename
+        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Test.sqlite"];
+        
+        _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
+                                                          creationBlock:^(FMDatabase *db, BOOL *rollback) {
+                                                              [db executeUpdate:@"create table if not exists ghrepo "
+                                                               "(id text unique, name text, url text)"];
+                                                          }];
+        
+    });
+    
+    afterEach(^{
+        [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
+            //[database executeUpdate:@"drop table if exists ghrepo"];
+        }];
+    });
+    
+    it(@"can store the list of my repos into db", ^AsyncBlock {
+        ALTGHRepoProvider *provider = [[ALTGHRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"https://api.github.com"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData.count).to.beGreaterThan(10);
+            ALTGHRepo *firstRepo = freshData[0];
+            expect(firstRepo.repoName).to.equal(@"android-flip");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
+            done();
+        });
+        
+    });
+    
+});
 SpecEnd

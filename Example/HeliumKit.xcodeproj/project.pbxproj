@@ -16,6 +16,8 @@
 		02A916EE198B840C006D136C /* ALTUserWithRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A916ED198B840C006D136C /* ALTUserWithRepo.m */; };
 		02A916F1198B84D1006D136C /* ALTRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A916F0198B84D1006D136C /* ALTRepo.m */; };
 		02A916F4198B8532006D136C /* ALTUserWithRepoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A916F3198B8532006D136C /* ALTUserWithRepoProvider.m */; };
+		02A916F9198BF7D8006D136C /* ALTGHRepoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A916F8198BF7D8006D136C /* ALTGHRepoProvider.m */; };
+		02A916FC198BF868006D136C /* ALTGHRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A916FB198BF868006D136C /* ALTGHRepo.m */; };
 		4E72D487FAEE495482788459 /* libPods-HeliumKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C29BAF3670AE433AAC183236 /* libPods-HeliumKit.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -64,6 +66,10 @@
 		02A916F0198B84D1006D136C /* ALTRepo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTRepo.m; sourceTree = "<group>"; };
 		02A916F2198B8532006D136C /* ALTUserWithRepoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTUserWithRepoProvider.h; sourceTree = "<group>"; };
 		02A916F3198B8532006D136C /* ALTUserWithRepoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTUserWithRepoProvider.m; sourceTree = "<group>"; };
+		02A916F7198BF7D8006D136C /* ALTGHRepoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTGHRepoProvider.h; sourceTree = "<group>"; };
+		02A916F8198BF7D8006D136C /* ALTGHRepoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTGHRepoProvider.m; sourceTree = "<group>"; };
+		02A916FA198BF868006D136C /* ALTGHRepo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTGHRepo.h; sourceTree = "<group>"; };
+		02A916FB198BF868006D136C /* ALTGHRepo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTGHRepo.m; sourceTree = "<group>"; };
 		10956E9D28F84B5A9BE4B332 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		271AA7EBEAE04CC99B62BBCD /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E41E5403EE8471189270C36 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 		02A916F5198B8535006D136C /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				02A916F7198BF7D8006D136C /* ALTGHRepoProvider.h */,
+				02A916F8198BF7D8006D136C /* ALTGHRepoProvider.m */,
 				02035D8A1986531A00A7C5F5 /* ALTUsersProvider.h */,
 				02035D8B1986531A00A7C5F5 /* ALTUsersProvider.m */,
 				02A916F2198B8532006D136C /* ALTUserWithRepoProvider.h */,
@@ -138,6 +146,8 @@
 		02A916F6198B8548006D136C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				02A916FA198BF868006D136C /* ALTGHRepo.h */,
+				02A916FB198BF868006D136C /* ALTGHRepo.m */,
 				02A916EC198B840C006D136C /* ALTUserWithRepo.h */,
 				02A916ED198B840C006D136C /* ALTUserWithRepo.m */,
 				02A916EF198B84D1006D136C /* ALTRepo.h */,
@@ -424,8 +434,10 @@
 				02035D981986C35A00A7C5F5 /* ALTCachedUsersProvider.m in Sources */,
 				02035D921986567200A7C5F5 /* ALTBaseRequest.m in Sources */,
 				02035D9B1986C5C300A7C5F5 /* ALTCachedResponse.m in Sources */,
+				02A916FC198BF868006D136C /* ALTGHRepo.m in Sources */,
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 				02035D8F1986535D00A7C5F5 /* ALTUser.m in Sources */,
+				02A916F9198BF7D8006D136C /* ALTGHRepoProvider.m in Sources */,
 				02A916EE198B840C006D136C /* ALTUserWithRepo.m in Sources */,
 				02A916F1198B84D1006D136C /* ALTRepo.m in Sources */,
 				02035D8C1986531A00A7C5F5 /* ALTUsersProvider.m in Sources */,
