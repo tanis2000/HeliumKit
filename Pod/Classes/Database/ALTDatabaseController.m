@@ -47,6 +47,13 @@
     }];
 }
 
+- (void)runDatabaseBlockInTransactionSync:(ALTDatabaseUpdateBlock)databaseBlock
+{
+    [_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        databaseBlock(db, rollback);
+    }];
+}
+
 - (PMKPromise *)runFetchForClass:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
