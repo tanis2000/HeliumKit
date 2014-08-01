@@ -1,0 +1,36 @@
+[
+    {
+        "email": "mymail@myprovider.com",
+        "id": 1,
+        "name": "Valerio Santinelli",
+        "repo": [
+        {
+            "id": 1,
+            "user_id": 1,
+            "url": "http://www.github.com/tanis2000/repo1"
+        },
+        {
+            "id": 2,
+            "user_id": 1,
+            "url": "http://www.github.com/tanis2000/repo2"
+        }
+        ]
+    },
+    {
+        "email": "steve@myprovider.com",
+        "id": 2,
+        "name": "Steve Jobs",
+        "repo": [
+        {
+            "id": 3,
+            "user_id": 2,
+            "url": "http://www.github.com/steve/repo1"
+        },
+        {
+            "id": 4,
+            "user_id": 2,
+            "url": "http://www.github.com/steve/repo2"
+        }
+        ]
+    }
+]

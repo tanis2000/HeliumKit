@@ -44,7 +44,7 @@
 
 - (PMKPromise *)saveModel:(id)model {
     return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter) {
-        [self.database runDatabaseBlockInTransaction:^(FMDatabase *database) {
+        [self.database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
             NSString *deleteStatement = [MTLFMDBAdapter deleteStatementForModel:model];
             NSArray *pkValues = [MTLFMDBAdapter primaryKeysValues:model];
             NSString *insertStatement = [MTLFMDBAdapter insertStatementForModel:model];
@@ -83,7 +83,7 @@
         [values addObject:masterValue];
     }
     NSString *stmt = [NSString stringWithFormat:@"delete from %@ where %@", detailTableName, [keys componentsJoinedByString:@" AND "]];
-    [self.database runDatabaseBlockInTransaction:^(FMDatabase *database) {
+    [self.database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
         [database executeUpdate:stmt withArgumentsInArray:values];
     }];
 }
@@ -95,7 +95,7 @@
         NSAssert(NO, [error localizedFailureReason]);
         return nil;
     }
-    if ([obj conformsToProtocol:@protocol(MTLFMDBSerializing)]) {
+    if ([obj conformsToProtocol:@protocol(MTLFMDBSerializing)] && self.database != nil) {
         [self saveModel:obj];
     }
     return obj;

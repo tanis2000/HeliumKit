@@ -41,9 +41,16 @@
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
         [_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-            databaseBlock(db);
+            databaseBlock(db, rollback);
             fullfiller(nil);
         }];
+    }];
+}
+
+- (void)runDatabaseBlockInTransactionSync:(ALTDatabaseUpdateBlock)databaseBlock
+{
+    [_queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        databaseBlock(db, rollback);
     }];
 }
 
@@ -54,10 +61,24 @@
             FMResultSet *resultSet = databaseBlock(db);
             NSArray *fetchedObjects = [self databaseObjectsWithResultSet:resultSet
                                                                    class:returnClass];
+            [resultSet close];
             fullfiller(fetchedObjects);
         }];
     }];
 }
+
+- (NSArray *)runFetchForClassSync:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock
+{
+    __block NSArray *fetchedObjects = [NSArray array];
+    [_queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *resultSet = databaseBlock(db);
+        fetchedObjects = [self databaseObjectsWithResultSet:resultSet
+                                                               class:returnClass];
+        [resultSet close];
+    }];
+    return fetchedObjects;
+}
+
 
 - (NSArray *)databaseObjectsWithResultSet:(FMResultSet *)resultSet
                                     class:(Class)class

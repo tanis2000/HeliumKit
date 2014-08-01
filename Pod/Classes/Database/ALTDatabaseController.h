@@ -10,7 +10,7 @@
 #import <FMDB/FMDB.h>
 #import <PromiseKit/PromiseKit.h>
 
-typedef void (^ALTDatabaseUpdateBlock)(FMDatabase *database);
+typedef void (^ALTDatabaseUpdateBlock)(FMDatabase *database, BOOL *rollback);
 typedef FMResultSet *(^ALTDatabaseFetchBlock)(FMDatabase *database);
 typedef void (^ALTDatabaseCompletionBlock)(void);
 
@@ -52,6 +52,15 @@ typedef void (^ALTDatabaseCompletionBlock)(void);
 - (PMKPromise *)runDatabaseBlockInTransaction:(ALTDatabaseUpdateBlock)databaseBlock;
 
 /**
+ Run a database block that doesn't return a query result. Everything is wrapped up in a transaction block. This is the same as `runDatabaseBlockInTransaction` except that it's being run synchronously.
+ 
+ @param databaseBlock an `ALTDatabaseUpdateBlock` to run
+ 
+ @return a `PMKPromise` fulfilled once the block has been executed.
+ */
+- (void)runDatabaseBlockInTransactionSync:(ALTDatabaseUpdateBlock)databaseBlock;
+
+/**
  Execute a query block on the database and returns an NSArray of model objects.
  Model objects should be subclasses of `MTLModel` and implement the `MTLFMDBSerializing` protocol
 
@@ -61,6 +70,18 @@ typedef void (^ALTDatabaseCompletionBlock)(void);
  @return an NSArray of objects of class returnClass
  */
 - (PMKPromise *)runFetchForClass:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock;
+
+/**
+ Execute a query block on the database and returns an NSArray of model objects.
+ This is the same as `runFetchForClass` but is run synchronously.
+ Model objects should be subclasses of `MTLModel` and implement the `MTLFMDBSerializing` protocol
+ 
+ @param returnClass   the class of the objects returned from the database query
+ @param databaseBlock a block containing a query to run against the database that must return an `FMResultSet`
+ 
+ @return an NSArray of objects of class returnClass
+ */
+- (NSArray *)runFetchForClassSync:(Class)returnClass fetchBlock:(ALTDatabaseFetchBlock)databaseBlock;
 
 /**
  Helper to run a SQL SELECT * statement against a table.
