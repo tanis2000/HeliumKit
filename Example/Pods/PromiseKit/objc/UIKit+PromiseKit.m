@@ -1,12 +1,11 @@
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <objc/runtime.h>
 #import "Private/PMKManualReference.h"
 #import "Private/ClassSwizzling.m"
 #import "PromiseKit/Promise.h"
-#import "PromiseKit+UIKit.h"
 @import UIKit.UINavigationController;
 @import UIKit.UIImagePickerController;
-#import <AssetsLibrary/AssetsLibrary.h>
-
+#import "UIKit+PromiseKit.h"
 
 static const char *kSegueFulfiller = "kSegueFulfiller";
 static const char *kSegueRejecter = "kSegueRejecter";
@@ -38,9 +37,10 @@ static const char *kSegueRejecter = "kSegueRejecter";
 
     [[ALAssetsLibrary new] assetForURL:url resultBlock:^(ALAsset *asset) {
         NSUInteger const N = (NSUInteger)asset.defaultRepresentation.size;
-        uint8_t bytes[N];
+        uint8_t *bytes = malloc(N);
         [asset.defaultRepresentation getBytes:bytes fromOffset:0 length:N error:nil];
         id data = [NSData dataWithBytes:bytes length:N];
+        free(bytes);
 
         [picker fulfill:PMKManifold(img, data, info)];
         [self pmk_breakReference];

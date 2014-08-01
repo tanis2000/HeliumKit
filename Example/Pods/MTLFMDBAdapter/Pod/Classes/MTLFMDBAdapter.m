@@ -259,7 +259,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSArray *allPropertyKeys = [columns allKeys];
     NSString *propertyKey = nil;
     NSIndexSet *idx = [allValues indexesOfObjectsPassingTest:^BOOL(NSString *obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isEqualToString:column]) return YES;
+        if (![obj isKindOfClass:NSNull.class] && [obj isEqualToString:column]) return YES;
         return NO;
     }];
     if (idx.count > 0 ) propertyKey = allPropertyKeys[idx.firstIndex];
@@ -275,7 +275,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         NSString *propertyKey = [self propertyKeyForModel:model column:key];
         [values addObject:[dictionaryValue valueForKey:propertyKey]];
     }
-
+    
     return values;
 }
 
@@ -286,7 +286,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *values = [NSMutableArray array];
     for (NSString *propertyKey in propertyKeys) {
 		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]] && ![keyPath isEqualToString:@"uid"]) {
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
             [values addObject:[dictionaryValue valueForKey:propertyKey]];
         }
     }
@@ -300,7 +300,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *qmarks = [NSMutableArray array];
 	for (NSString *propertyKey in propertyKeys) {
 		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]] && ![keyPath isEqualToString:@"uid"]) {
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
             [stats addObject:keyPath];
             [qmarks addObject:@"?"];
         }
@@ -325,7 +325,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *stats = [NSMutableArray array];
 	for (NSString *propertyKey in propertyKeys) {
 		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]] && ![keyPath isEqualToString:@"uid"]) {
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
             NSString *s = [NSString stringWithFormat:@"%@ = ?", keyPath];
             [stats addObject:s];
         }

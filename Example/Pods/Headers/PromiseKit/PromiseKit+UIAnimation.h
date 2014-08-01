@@ -1,1 +1,1 @@
-../../PromiseKit/objc/PromiseKit+UIAnimation.h
+../../PromiseKit/objc/deprecated/PromiseKit+UIAnimation.h
