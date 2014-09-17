@@ -1,0 +1,7 @@
+#import "ALTBaseProvider.h"
+#import "ALTDatabaseController.h"
+#import "ALTMappingResult.h"
+#import "ALTObjectMapper.h"
+#import "ALTObjectMapping.h"
+#import "ALTRelationshipKeyMapping.h"
+#import "ALTRelationshipMapping.h"
