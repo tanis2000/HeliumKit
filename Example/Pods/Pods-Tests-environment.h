@@ -9,50 +9,44 @@
 // AFNetworking
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
 #define COCOAPODS_VERSION_MAJOR_AFNetworking 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking 1
 
 // AFNetworking/NSURLConnection
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLConnection
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLConnection 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection 1
 
 // AFNetworking/NSURLSession
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLSession
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLSession 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession 1
 
 // AFNetworking/Reachability
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_Reachability
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_Reachability 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_Reachability 1
 
 // AFNetworking/Security
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_Security
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_Security 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_Security 1
 
 // AFNetworking/Serialization
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_Serialization
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_Serialization 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 1
 
 // AFNetworking/UIKit
 #define COCOAPODS_POD_AVAILABLE_AFNetworking_UIKit
 #define COCOAPODS_VERSION_MAJOR_AFNetworking_UIKit 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
+#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
-
-// ChuzzleKit
-#define COCOAPODS_POD_AVAILABLE_ChuzzleKit
-#define COCOAPODS_VERSION_MAJOR_ChuzzleKit 1
-#define COCOAPODS_VERSION_MINOR_ChuzzleKit 0
-#define COCOAPODS_VERSION_PATCH_ChuzzleKit 4
 
 // Expecta
 #define COCOAPODS_POD_AVAILABLE_Expecta
@@ -94,13 +88,13 @@
 #define COCOAPODS_POD_AVAILABLE_HeliumKit
 #define COCOAPODS_VERSION_MAJOR_HeliumKit 0
 #define COCOAPODS_VERSION_MINOR_HeliumKit 1
-#define COCOAPODS_VERSION_PATCH_HeliumKit 0
+#define COCOAPODS_VERSION_PATCH_HeliumKit 1
 
 // MTLFMDBAdapter
 #define COCOAPODS_POD_AVAILABLE_MTLFMDBAdapter
 #define COCOAPODS_VERSION_MAJOR_MTLFMDBAdapter 0
 #define COCOAPODS_VERSION_MINOR_MTLFMDBAdapter 1
-#define COCOAPODS_VERSION_PATCH_MTLFMDBAdapter 2
+#define COCOAPODS_VERSION_PATCH_MTLFMDBAdapter 3
 
 // Mantle
 #define COCOAPODS_POD_AVAILABLE_Mantle
@@ -116,69 +110,213 @@
 
 // OMGHTTPURLRQ
 #define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ
-#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ 1
-#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ 1
-#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ 4
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ 2
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ 0
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ 1
 
 // OMGHTTPURLRQ/RQ
 #define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ_RQ
-#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_RQ 1
-#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_RQ 1
-#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_RQ 4
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_RQ 2
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_RQ 0
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_RQ 1
 
 // OMGHTTPURLRQ/UserAgent
 #define COCOAPODS_POD_AVAILABLE_OMGHTTPURLRQ_UserAgent
-#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_UserAgent 1
-#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_UserAgent 1
-#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_UserAgent 4
+#define COCOAPODS_VERSION_MAJOR_OMGHTTPURLRQ_UserAgent 2
+#define COCOAPODS_VERSION_MINOR_OMGHTTPURLRQ_UserAgent 0
+#define COCOAPODS_VERSION_PATCH_OMGHTTPURLRQ_UserAgent 1
 
-// PromiseKit
-#define COCOAPODS_POD_AVAILABLE_PromiseKit
-#define COCOAPODS_VERSION_MAJOR_PromiseKit 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit 13
+// PromiseKit/ACAccountStore
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_ACAccountStore
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_ACAccountStore 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_ACAccountStore 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_ACAccountStore 17
+
+// PromiseKit/AVAudioSession
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_AVAudioSession
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_AVAudioSession 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_AVAudioSession 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_AVAudioSession 17
+
+// PromiseKit/AVFoundation
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_AVFoundation
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_AVFoundation 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_AVFoundation 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_AVFoundation 17
+
+// PromiseKit/Accounts
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Accounts
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Accounts 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Accounts 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Accounts 17
+
+// PromiseKit/CKContainer
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CKContainer
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CKContainer 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CKContainer 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CKContainer 17
+
+// PromiseKit/CKDatabase
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CKDatabase
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CKDatabase 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CKDatabase 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CKDatabase 17
+
+// PromiseKit/CLGeocoder
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CLGeocoder
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CLGeocoder 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CLGeocoder 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CLGeocoder 17
+
+// PromiseKit/CLLocationManager
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CLLocationManager
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CLLocationManager 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CLLocationManager 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CLLocationManager 17
+
+// PromiseKit/CloudKit
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CloudKit
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CloudKit 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CloudKit 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CloudKit 17
+
+// PromiseKit/CoreLocation
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_CoreLocation
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_CoreLocation 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_CoreLocation 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_CoreLocation 17
 
 // PromiseKit/Foundation
 #define COCOAPODS_POD_AVAILABLE_PromiseKit_Foundation
 #define COCOAPODS_VERSION_MAJOR_PromiseKit_Foundation 0
 #define COCOAPODS_VERSION_MINOR_PromiseKit_Foundation 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_Foundation 13
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Foundation 17
 
-// PromiseKit/UIAnimation
-#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIAnimation
-#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIAnimation 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit_UIAnimation 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_UIAnimation 13
+// PromiseKit/MKDirections
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_MKDirections
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_MKDirections 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_MKDirections 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_MKDirections 17
+
+// PromiseKit/MKMapSnapshotter
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_MKMapSnapshotter
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_MKMapSnapshotter 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_MKMapSnapshotter 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_MKMapSnapshotter 17
+
+// PromiseKit/MapKit
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_MapKit
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_MapKit 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_MapKit 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_MapKit 17
+
+// PromiseKit/NSFileManager
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_NSFileManager
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_NSFileManager 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_NSFileManager 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_NSFileManager 17
+
+// PromiseKit/NSNotificationCenter
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_NSNotificationCenter
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_NSNotificationCenter 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_NSNotificationCenter 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_NSNotificationCenter 17
+
+// PromiseKit/NSTask
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_NSTask
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_NSTask 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_NSTask 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_NSTask 17
+
+// PromiseKit/NSURLConnection
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_NSURLConnection
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_NSURLConnection 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_NSURLConnection 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_NSURLConnection 17
+
+// PromiseKit/Pause
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Pause
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Pause 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Pause 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Pause 17
+
+// PromiseKit/Promise
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Promise
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Promise 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Promise 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Promise 17
+
+// PromiseKit/SKRequest
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_SKRequest
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_SKRequest 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_SKRequest 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_SKRequest 17
+
+// PromiseKit/SLRequest
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_SLRequest
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_SLRequest 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_SLRequest 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_SLRequest 17
+
+// PromiseKit/Social
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Social
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Social 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Social 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Social 17
+
+// PromiseKit/StoreKit
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_StoreKit
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_StoreKit 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_StoreKit 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_StoreKit 17
+
+// PromiseKit/UIActionSheet
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIActionSheet
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIActionSheet 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIActionSheet 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIActionSheet 17
+
+// PromiseKit/UIAlertView
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIAlertView
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIAlertView 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIAlertView 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIAlertView 17
 
 // PromiseKit/UIKit
 #define COCOAPODS_POD_AVAILABLE_PromiseKit_UIKit
 #define COCOAPODS_VERSION_MAJOR_PromiseKit_UIKit 0
 #define COCOAPODS_VERSION_MINOR_PromiseKit_UIKit 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_UIKit 13
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIKit 17
 
-// PromiseKit/base
-#define COCOAPODS_POD_AVAILABLE_PromiseKit_base
-#define COCOAPODS_VERSION_MAJOR_PromiseKit_base 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit_base 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_base 13
+// PromiseKit/UIView
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIView
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIView 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIView 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIView 17
 
-// PromiseKit/defaults
-#define COCOAPODS_POD_AVAILABLE_PromiseKit_defaults
-#define COCOAPODS_VERSION_MAJOR_PromiseKit_defaults 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit_defaults 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_defaults 13
+// PromiseKit/UIViewController
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_UIViewController
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_UIViewController 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_UIViewController 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_UIViewController 17
 
-// PromiseKit/private
-#define COCOAPODS_POD_AVAILABLE_PromiseKit_private
-#define COCOAPODS_VERSION_MAJOR_PromiseKit_private 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit_private 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_private 13
+// PromiseKit/Until
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_Until
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_Until 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_Until 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_Until 17
 
-// PromiseKit/timing
-#define COCOAPODS_POD_AVAILABLE_PromiseKit_timing
-#define COCOAPODS_VERSION_MAJOR_PromiseKit_timing 0
-#define COCOAPODS_VERSION_MINOR_PromiseKit_timing 9
-#define COCOAPODS_VERSION_PATCH_PromiseKit_timing 13
+// PromiseKit/When
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_When
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_When 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_When 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_When 17
+
+// PromiseKit/all
+#define COCOAPODS_POD_AVAILABLE_PromiseKit_all
+#define COCOAPODS_VERSION_MAJOR_PromiseKit_all 0
+#define COCOAPODS_VERSION_MINOR_PromiseKit_all 9
+#define COCOAPODS_VERSION_PATCH_PromiseKit_all 17
 
 // Specta
 #define COCOAPODS_POD_AVAILABLE_Specta

@@ -1,0 +1,1 @@
+../../PromiseKit/objc/CLLocationManager+PromiseKit.h

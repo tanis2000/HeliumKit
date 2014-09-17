@@ -249,7 +249,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>This text or CocoaPods throws a fit</string>
+			<string>See README.markdown for full license text.</string>
 			<key>Title</key>
 			<string>OMGHTTPURLRQ</string>
 			<key>Type</key>

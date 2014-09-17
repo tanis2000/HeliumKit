@@ -3,12 +3,6 @@
 #import <Foundation/NSArray.h>
 #import <PromiseKit/fwd.h>
 
-typedef void (^PromiseResolver)(id) __attribute__((deprecated("Use PromiseFulfiller or PromiseRejecter")));
-typedef void (^PromiseFulfiller)(id) __attribute__((deprecated("Use PMKPromiseFulfiller")));
-typedef void (^PromiseRejecter)(NSError *) __attribute__((deprecated("Use PMKPromiseRejecter")));
-typedef void (^PMKPromiseFulfiller)(id);
-typedef void (^PMKPromiseRejecter)(NSError *);
-
 /**
 A `Promise` represents the future value of a task.
 
@@ -62,46 +56,6 @@ Then is always executed on the main dispatch queue (i.e the main/UI thread).
 */
 - (PMKPromise *(^)(dispatch_queue_t, void(^)(void)))finallyOn;
 
-/**
-Returns a new Promise that is resolved when all passed Promises are resolved.
-
-If an array is passed then the returned `Promise` is resolved once all of the `Promise`s in the array are resolved. The returned Promise is rejected immediately if *any* of the `Promise`s received by `when` fail, discarding all other Promise values (thus you only get one error in any catch handler you provide).
-
-The returned `Promise` is resolved with an array of results indexed as the original array passed to when. If you pass a single value to when, you will not get an array in subsequent `then`s.
-
-@param promiseOrArrayOfPromisesOrValue an array of Promises, a single Promise or a single value of any type.
-*/
-+ (PMKPromise *)when:(id)promiseOrArrayOfPromisesOrValue;
-
-/**
- Same as when, though only takes an object that implements `NSFastEnumeration` (`NSArray` implements `NSFastEnumeration`)
-
- Alias provided due to ES6 specifications.
-*/
-+ (PMKPromise *)all:(id<NSFastEnumeration, NSObject>)enumerable;
-
-/**
-Loops until one or more promises have resolved.
-
-Because Promises are single-shot, the block to until must return one or more promises. They are then `when`’d. If they succeed the until loop is concluded. If they fail then the @param `catch` handler is executed.
-
-If the `catch` throws or returns an `NSError` then the loop is ended.
-
-If the `catch` handler returns a Promise then re-execution of the loop is suspended upon resolution of that Promise. If the Promise succeeds then the loop continues. If it fails the loop ends.
-
-An example usage is an app starting up that must get data from the Internet before the main ViewController can be shown. You can `until` the poll Promise and in the catch handler decide if the poll should be reattempted or not, perhaps returning a `UIAlertView.promise` allowing the user to choose if they continue or not.
-*/
-+ (PMKPromise *)until:(id(^)(void))blockReturningPromiseOrArrayOfPromises catch:(id)catchHandler;
-
-/**
- Create a new root Promise.
-
- Pass a block to this constructor, the block must take two arguments that point to the `fulfiller` and `rejecter` of this Promise. Fulfill or reject this Promise using those blocks and the Promise chain that roots to this Promise will be resolved accordingly.
-
- Should you need to fulfill a promise but have no sensical value to use; fulfill with `nil`.
-*/
-+ (PMKPromise *)new:(void(^)(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter))block;
-
 /** 
 @return A new `Promise` that is already resolved with @param value. Calling `then` on a resolved `Promise` executes the provided block immediately.
 
@@ -127,38 +81,37 @@ Note that passing an `NSError` object is valid usage and will reject this promis
 */
 - (id)value;
 
+/**
+ Create a new root Promise.
+
+ Pass a block to this constructor, the block must take two arguments that point to the `fulfiller` and `rejecter` of this Promise. Fulfill or reject this Promise using those blocks and the Promise chain that roots to this Promise will be resolved accordingly.
+
+ Should you need to fulfill a promise but have no sensical value to use; fulfill with `nil`.
+*/
++ (instancetype)new:(void(^)(PMKPromiseFulfiller fulfill, PMKPromiseRejecter reject))block;
+
 @end
 
 
 
 /**
- Use with `[Promise new:]` to fulfill a Promise with multiple arguments.
+ Use with `+new:`, or return from a `then` or `catch` handler to fulfill
+ a promise with multiple arguments.
 
  Consumers of your Promise are not compelled to consume any arguments and
  in fact will often only consume the first parameter. Thus ensure the
  order of parameters is: from most-important to least-important.
-
- Note that attempts to reject with `PMKManifold` will `@throw`.
+ 
+ Currently PromiseKit limits you to THREE parameters to the manifold.
 */
-id PMKManifold(NSArray *arguments);
-#define PMKManifold(...) PMKManifold(@[__VA_ARGS__])
+#define PMKManifold(...) __PMKManifold(__VA_ARGS__, 3, 2, 1)
+#define __PMKManifold(_1, _2, _3, N, ...) [PMKArray:N, _1, _2, _3]
+@interface PMKArray : NSObject
+// returning `id` to avoid compiler issues: https://github.com/mxcl/PromiseKit/issues/76
++ (id):(NSUInteger)count, ...;
+@end
 
 
-
-#define PMKErrorDomain @"PMKErrorDomain"
-#define PMKUnderlyingExceptionKey @"PMKUnderlyingExceptionKey"
-#define PMKFailingPromiseIndexKey @"PMKFailingPromiseIndexKey"
-#define PMKUnhandledExceptionError 1
-#define PMKUnknownError 2
-#define PMKInvalidUsageError 3
-#define PMKAccessDeniedError 4
-
-// deprecated
-#define PMKErrorCodeThrown PMKUnhandledExceptionError
-#define PMKErrorCodeUnknown PMKUnknownError
-#define PMKErrorCodeInvalidUsage PMKInvalidUsageError
-
-extern NSString const*const PMKThrown __attribute__((deprecated("Use PMKUnderlyingExceptionKey")));
 
 
 /**
@@ -170,8 +123,6 @@ The returned `Promise` is resolved with the value returned from @param block (if
 @return A new `Promise` to be executed after @param block.
 */
 PMKPromise *dispatch_promise(id block);
-
-
 
 /**
  Executes @param block via `dispatch_async` on the specified queue.

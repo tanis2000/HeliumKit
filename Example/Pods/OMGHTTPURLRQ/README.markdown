@@ -8,12 +8,6 @@ NSMutableURLRequest *rq = [OMGHTTPURLRQ GET:@"http://api.com":@{@"key": @"value"
 // application/x-www-form-urlencoded
 NSMutableURLRequest *rq = [OMGHTTPURLRQ POST:@"http://api.com":@{@"key": @"value"}];
 
-// multipart/form-data
-NSMutableURLRequest *rq = [OMGHTTPURLRQ POST:url multipartForm:^(void(^addFile)(NSData *payload, id name, id filename)) {
-    addFile(data1, @"file1", @"file1.png");
-    addFile(data2, @"file2", @"file2.png");
-}];
-
 // application/json
 NSMutableURLRequest *rq = [OMGHTTPURLRQ POST:@"http://api.com" JSON:@{@"key": @"value"}];
 
@@ -22,6 +16,54 @@ NSMutableURLRequest *rq = [OMGHTTPURLRQ PUT:@"http://api.com":@{@"key": @"value"
 
 // DELETE
 NSMutableURLRequest *rq = [OMGHTTPURLRQ DELETE:@"http://api.com":@{@"key": @"value"}];
+```
+
+You can then pass these to an `NSURLConnection` or `NSURLSession`.
+
+
+## `multipart/form-data`
+
+```objc
+
+OMGMultipartFormData *multipartFormData = [OMGMultipartFormData new];
+
+NSData *data1 = [NSData dataWithContentsOfFile:@"myimage1.png"];
+[multipartFormData addFile:data1 parameterName:@"file1" filename:@"myimage1.png" contentType:@"image/png"];
+
+// Ideally you would not want to re-encode the PNG, but often it is
+// tricky to avoid it.
+UIImage *image2 = [UIImage imageNamed:@"image2"];
+NSData *data2 = UIImagePNGRepresentation(image2);
+[multipartFormData addFile:data2 parameterName:@"file2" filename:@"myimage2.png" contentType:@"image/png"];
+
+// SUPER Ideally you would not want to re-encode the JPEG as the process
+// is lossy. If you image comes from the AssetLibrary you *CAN* get the
+// original `NSData`. See stackoverflow.com.
+UIImage *image3 = [UIImage imageNamed:@"image3"];
+NSData *data3 = UIImageJPEGRepresentation(image3);
+[multipartFormData addFile:data3 parameterName:@"file2" filename:@"myimage3.jpeg" contentType:@"image/jpeg"];
+
+NSMutableURLRequest *rq = [OMGHTTPURLRQ POST:url:builder];
+```
+
+
+## Configuring an `NSURLSessionUploadTask`
+
+If you need to use `NSURLSession`’s `uploadTask:` but it won’t work because your endpoint expects a multipart-form request, use this:
+
+```objc
+id config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:someID];
+id session = [NSURLSession sessionWithConfiguration:config delegate:someObject delegateQueue:[NSOperationQueue new]];
+
+OMGMultipartFormData *multipartFormData = [OMGMultipartFormData new];
+[multipartFormDatabuilder addFile:data parameterName:@"file" filename:nil contentType:nil];
+
+NSURLRequest *rq = [OMGHTTPURLRQ POST:urlString:multipartFormData];
+
+id path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"upload.NSData"];
+[rq.HTTPBody writeToFile:path atomically:YES];
+
+[[session uploadTaskWithRequest:rq fromFile:[NSURL fileURLWithPath:path]] resume];
 ```
 
 
@@ -33,4 +75,31 @@ If you just need a sensible UserAgent string for your application you can `pod O
 #import <OMGHTTPURLRQ/OMGUserAgent.h>
 
 NSString *userAgent = OMGUserAgent();
+```
+
+OMGHTTPURLRQ adds this User-Agent to all requests it generates automatically.
+
+
+# License
+
+```
+Copyright 2014 Max Howell <mxcl@me.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 ```

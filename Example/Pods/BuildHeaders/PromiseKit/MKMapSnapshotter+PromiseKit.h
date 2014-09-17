@@ -1,0 +1,1 @@
+../../PromiseKit/objc/MKMapSnapshotter+PromiseKit.h
