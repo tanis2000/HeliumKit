@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "HeliumKit"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "HeliumKit is a lightweight framework that sits between your web services and the business logic of your app."
   s.description      = <<-DESC
                         It provides basic mapping to automate conversion from DTO coming from your web services into object models of your business domain. We decided to streamline the process by adopting some libraries and frameworks:
@@ -37,11 +37,14 @@ Pod::Spec.new do |s|
   #s.resources = 'Pod/Assets/*.png'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit'
   s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Mantle', '~> 1.5'
   s.dependency 'FMDB', '~> 2.3'
   s.dependency 'MTLFMDBAdapter', '~> 0.1'
-  s.dependency 'PromiseKit', '~> 0.9'
+  s.dependency 'PromiseKit/Promise', '~> 0.9'
+  s.dependency 'PromiseKit/When', '~> 0.9'
+  s.dependency 'PromiseKit/Until', '~> 0.9'
+  s.dependency 'PromiseKit/Pause', '~> 0.9'
 
 end
