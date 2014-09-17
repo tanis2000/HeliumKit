@@ -1,1 +1,0 @@
-../../PromiseKit/objc/CKDatabase+PromiseKit.h

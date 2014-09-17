@@ -1,1 +1,0 @@
-../../PromiseKit/objc/SLRequest+PromiseKit.h

@@ -1,1 +1,0 @@
-../../PromiseKit/objc/SKRequest+PromiseKit.h

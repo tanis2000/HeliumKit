@@ -1,1 +1,0 @@
-../../PromiseKit/objc/NSFileManager+PromiseKit.h

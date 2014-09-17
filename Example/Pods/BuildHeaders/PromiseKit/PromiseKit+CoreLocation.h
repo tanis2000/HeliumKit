@@ -1,1 +1,0 @@
-../../PromiseKit/objc/deprecated/PromiseKit+CoreLocation.h

@@ -35,101 +35,19 @@ PODS:
     - FMDB (~> 2.3)
     - Mantle (~> 1.5)
     - MTLFMDBAdapter (~> 0.1)
-    - PromiseKit/all (~> 0.9)
+    - PromiseKit/Pause (~> 0.9)
+    - PromiseKit/Promise (~> 0.9)
+    - PromiseKit/Until (~> 0.9)
+    - PromiseKit/When (~> 0.9)
   - Mantle (1.5):
     - Mantle/extobjc
   - Mantle/extobjc (1.5)
   - MTLFMDBAdapter (0.1.3):
     - FMDB (~> 2.3)
     - Mantle (~> 1.5)
-  - OMGHTTPURLRQ (2.0.1):
-    - OMGHTTPURLRQ/RQ
-    - OMGHTTPURLRQ/UserAgent
-    - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/RQ (2.0.1):
-    - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (2.0.1):
-    - OMGHTTPURLRQ/UserAgent
-  - PromiseKit/ACAccountStore (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/Accounts (0.9.17):
-    - PromiseKit/ACAccountStore
-  - PromiseKit/all (0.9.17):
-    - PromiseKit/Accounts
-    - PromiseKit/AVFoundation
-    - PromiseKit/CloudKit
-    - PromiseKit/CoreLocation
-    - PromiseKit/Foundation
-    - PromiseKit/MapKit
-    - PromiseKit/Pause
-    - PromiseKit/Social
-    - PromiseKit/StoreKit
-    - PromiseKit/UIKit
-    - PromiseKit/Until
-    - PromiseKit/When
-  - PromiseKit/AVAudioSession (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/AVFoundation (0.9.17):
-    - PromiseKit/AVAudioSession
-  - PromiseKit/CKContainer (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/CKDatabase (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/CLGeocoder (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/CLLocationManager (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/CloudKit (0.9.17):
-    - PromiseKit/CKContainer
-    - PromiseKit/CKDatabase
-  - PromiseKit/CoreLocation (0.9.17):
-    - PromiseKit/CLGeocoder
-    - PromiseKit/CLLocationManager
-  - PromiseKit/Foundation (0.9.17):
-    - PromiseKit/NSFileManager
-    - PromiseKit/NSNotificationCenter
-    - PromiseKit/NSTask
-    - PromiseKit/NSURLConnection
-  - PromiseKit/MapKit (0.9.17):
-    - PromiseKit/MKDirections
-    - PromiseKit/MKMapSnapshotter
-  - PromiseKit/MKDirections (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/MKMapSnapshotter (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/NSFileManager (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/NSNotificationCenter (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/NSTask (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/NSURLConnection (0.9.17):
-    - OMGHTTPURLRQ
-    - PromiseKit/Promise
   - PromiseKit/Pause (0.9.17):
     - PromiseKit/Promise
   - PromiseKit/Promise (0.9.17)
-  - PromiseKit/SKRequest (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/SLRequest (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/Social (0.9.17):
-    - PromiseKit/SLRequest
-  - PromiseKit/StoreKit (0.9.17):
-    - PromiseKit/SKRequest
-  - PromiseKit/UIActionSheet (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/UIAlertView (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/UIKit (0.9.17):
-    - PromiseKit/UIActionSheet
-    - PromiseKit/UIAlertView
-    - PromiseKit/UIView
-    - PromiseKit/UIViewController
-  - PromiseKit/UIView (0.9.17):
-    - PromiseKit/Promise
-  - PromiseKit/UIViewController (0.9.17):
-    - PromiseKit/Promise
   - PromiseKit/Until (0.9.17):
     - PromiseKit/Promise
     - PromiseKit/When
@@ -154,10 +72,9 @@ SPEC CHECKSUMS:
   Expecta+Snapshots: 30c28e3d8104665ee70e32df1cfc030bb37a8a6c
   FBSnapshotTestCase: 9053afee1d66b4c7c313fcb0ae582a5e47bea9d0
   FMDB: 31ec26773c7f7b7890a6038235a1f2bbd933a7cb
-  HeliumKit: ce84fd9c1c5f87bdef36a55a11f57085bd69d268
+  HeliumKit: d0b9b24a4563ff8262ee5fb45392fbe9c9ee2a76
   Mantle: c67a7e45e14196ed42b2a7cbb98ff6a9920e6b92
   MTLFMDBAdapter: b9c38b8bcfc956be9fd6bff94b9638d402ec7159
-  OMGHTTPURLRQ: 4297af2a7f7ca7adb3f8331203001e0fd2dae16f
   PromiseKit: 7a18d7b8d41a156cda0268c3cb065d272d5aa554
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
