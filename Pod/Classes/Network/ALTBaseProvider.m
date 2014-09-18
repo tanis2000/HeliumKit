@@ -139,6 +139,7 @@
             rejecter(error);
         }];
         
+        _lastOperation = operation;
         [self.manager.operationQueue addOperation:operation];
     }];
 }

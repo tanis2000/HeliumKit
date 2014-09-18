@@ -218,6 +218,25 @@ describe(@"main tests", ^{
         
     });
 
+    it(@"can cancel the last AFNetworking operation", ^AsyncBlock {
+        ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error.code).to.equal(-999);
+            done();
+        });
+        [provider.lastOperation cancel];
+        expect(provider.lastOperation.isCancelled).to.beTruthy();
+        
+    });
+
 
 });
 
