@@ -43,7 +43,7 @@ describe(@"main tests", ^{
         _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
                                                           creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists user "
-                                                               "(userId text unique, name text, email text)"];
+                                                               "(pk integer primary key , userId text unique, name text, email text)"];
                                                               [db executeUpdate:@"create table if not exists repository "
                                                                "(id text unique, userId text, url text)"];
                                                           }];
@@ -236,8 +236,35 @@ describe(@"main tests", ^{
         expect(provider.lastOperation.isCancelled).to.beTruthy();
         
     });
-
-
+    
+    
+    it(@"Can insert new row whit Promise", ^AsyncBlock
+    {
+        PMKPromise * promise =[_database insertQuery:@"insert into user (userid, name, email) values (?, ?, ?)"
+                                          parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]];
+        promise.then(^(NSNumber*num)
+                     {
+                         expect(num.integerValue).to.beGreaterThan(0);
+                         done();
+                     }).catch(^(NSError *error) {
+                         NSLog(@"Failed with error: %@", [error localizedDescription]);
+                         expect(error.code).to.equal(-999);
+                         done();
+                     });
+    });
+    
+    it(@"Can insert new row", ^AsyncBlock
+    {
+        NSError *error = nil;
+        NSNumber* pk = [_database insertQuerySync:@"insert into user (userid, name, email) values (?, ?, ?)"
+                                       parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]
+                                            error:&error];
+        
+        expect(pk.integerValue).to.beGreaterThan(0);
+        expect(error).to.beNil();
+        done();
+    });
+    
 });
 
 

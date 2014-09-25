@@ -37,6 +37,21 @@
     return self;
 }
 
+
+
++ (FMResultSet*)executeQuesryInDB:(FMDatabase*)db stmt:(NSString *)stmt
+                       parameters:(NSArray *)parameters error:(NSError**)outErr
+{
+    FMResultSet *res = [db executeQuery:stmt withArgumentsInArray:parameters];
+    if(res == nil && outErr)
+        *outErr = [db lastError] ;
+    return res;
+}
+
+
+
+
+
 - (PMKPromise *)runDatabaseBlockInTransaction:(ALTDatabaseUpdateBlock)databaseBlock
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
@@ -96,9 +111,17 @@
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
         [_queue inDatabase:^(FMDatabase *db) {
-            FMResultSet *res = [db executeQuery:[NSString stringWithFormat:@"select * from %@", tableName]];
-            NSArray *s = [self databaseObjectsWithResultSet:res class:returnClass];
-            fullfiller(s);
+            NSError *error = nil;
+            FMResultSet *res = [[self class]executeQuesryInDB:db stmt:[NSString stringWithFormat:@"select * from %@", tableName] parameters:nil error:&error];
+            if(error != nil)
+            {
+                rejecter(error);
+            }
+            else
+            {
+                NSArray *s = [self databaseObjectsWithResultSet:res class:returnClass];
+                fullfiller(s);
+            }
         }];
     }];
 }
@@ -107,9 +130,17 @@
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
         [_queue inDatabase:^(FMDatabase *db) {
-            FMResultSet *res = [db executeQuery:stmt withArgumentsInArray:parameters];
-            NSArray *s = [self databaseObjectsWithResultSet:res class:returnClass];
-            fullfiller(s);
+            NSError *error = nil;
+            FMResultSet *res = [[self class]executeQuesryInDB:db stmt:stmt parameters:parameters error:&error];
+            if(error != nil)
+            {
+                rejecter(error);
+            }
+            else
+            {
+                NSArray *s = [self databaseObjectsWithResultSet:res class:returnClass];
+                fullfiller(s);
+            }
         }];
     }];
 }
@@ -120,52 +151,138 @@
 }
 
 
-- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass parameters:(NSArray *)parameters {
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass parameters:(NSArray *)parameters error:(NSError**)error  {
     dispatch_semaphore_t sem = dispatch_semaphore_create(0);
     __block id obj = nil;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [self rawQuery:stmt returnClass:returnClass parameters:parameters].thenOn(queue, ^(NSArray *res){
         obj = res;
         dispatch_semaphore_signal(sem);
-    });
+    }).catchOn(queue, ^(NSError *outErr)
+             {
+                 if(error)
+                     *error = outErr;
+                 dispatch_semaphore_signal(sem);
+             });
     
     dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
     return obj;
 }
+
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass parameters:(NSArray *)parameters
+{
+    return [self rawQuerySync:stmt returnClass:returnClass parameters:parameters error:nil];
+}
+
+
 
 - (PMKPromise *)rawQuery:(NSString *)stmt parameters:(NSArray *)parameters
 {
     return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
         [_queue inDatabase:^(FMDatabase *db) {
             NSMutableArray *s = [NSMutableArray array];
-            FMResultSet *res = [db executeQuery:stmt withArgumentsInArray:parameters];
-            while ([res next]) {
-                [s addObject:[res resultDictionary]];
+            NSError *error = nil;
+            FMResultSet *res = [[self class]executeQuesryInDB:db stmt:stmt parameters:parameters error:&error];
+            if(error != nil)
+            {
+                rejecter(error);
             }
-            fullfiller(s);
+            else
+            {
+                while ([res next]) {
+                    [s addObject:[res resultDictionary]];
+                }
+                fullfiller(s);
+            }
         }];
     }];
 }
 
-- (NSArray *)rawQuerySync:(NSString *)stmt parameters:(NSArray *)parameters {
+- (NSArray *)rawQuerySync:(NSString *)stmt parameters:(NSArray *)parameters error:(NSError**)error  {
     dispatch_semaphore_t sem = dispatch_semaphore_create(0);
     __block id obj = nil;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [self rawQuery:stmt parameters:parameters].thenOn(queue, ^(NSArray *res){
         obj = res;
         dispatch_semaphore_signal(sem);
-    });
+    }).catchOn(queue, ^(NSError *outErr)
+             {
+                 if(error)
+                     *error = outErr;
+                 dispatch_semaphore_signal(sem);
+             });
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    return obj;
+}
+- (NSArray *)rawQuerySync:(NSString *)stmt parameters:(NSArray *)parameters
+{
+    return [self rawQuerySync:stmt parameters:parameters error:nil];
+}
+
+
+
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass error:(NSError**)error {
+    return [self rawQuerySync:stmt returnClass:returnClass parameters:nil error:error];
+}
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass
+{
+    return [self rawQuerySync:stmt returnClass:returnClass error:nil];
+}
+
+
+- (NSArray *)rawQuerySync:(NSString *)stmt error:(NSError**)error  {
+    return [self rawQuerySync:stmt parameters:nil error:error];
+}
+- (NSArray *)rawQuerySync:(NSString *)stmt
+{
+    return [self rawQuerySync:stmt error:nil];
+}
+
+
+- (PMKPromise *)insertQuery:(NSString *)stmt parameters:(NSArray *)parameters
+{
+    return [PMKPromise new:^(PMKPromiseFulfiller fullfiller, PMKPromiseRejecter rejecter) {
+        [_queue inDatabase:^(FMDatabase *db) {
+            NSMutableArray *s = [NSMutableArray array];
+            NSError *error = nil;
+            FMResultSet *res = [[self class]executeQuesryInDB:db stmt:stmt parameters:parameters error:&error];
+            if(error != nil)
+            {
+                rejecter(error);
+            }
+            else{
+                while ([res next]) {
+                    [s addObject:[res resultDictionary]];
+                }
+                NSNumber * key = [NSNumber numberWithLongLong:[db lastInsertRowId]];
+                fullfiller(key);
+            }
+        }];
+    }];
+}
+
+- (NSNumber *)insertQuerySync:(NSString *)stmt parameters:(NSArray *)parameters error:(NSError**)error {
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    __block id obj = nil;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    [self insertQuery:stmt parameters:parameters].thenOn(queue, ^(NSNumber *res){
+        obj = res;
+        dispatch_semaphore_signal(sem);
+    }).catchOn(queue, ^(NSError *outErr)
+             {
+                 if(error)
+                     *error = outErr;
+                 dispatch_semaphore_signal(sem);
+             });
     
     dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
     return obj;
 }
 
-- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass {
-    return [self rawQuerySync:stmt returnClass:returnClass parameters:nil];
-}
-
-- (NSArray *)rawQuerySync:(NSString *)stmt {
-    return [self rawQuerySync:stmt parameters:nil];
+- (NSNumber *)insertQuerySync:(NSString *)stmt parameters:(NSArray *)parameters
+{
+    return [self insertQuerySync:stmt parameters:parameters error:nil];
 }
 
 
