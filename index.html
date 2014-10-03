@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Heliumkit by tanis2000</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Heliumkit</h1>
+        <h2>HeliumKit, a lightweight framework that sits between your web services and the business logic of your app</h2>
+        <a href="https://github.com/tanis2000/HeliumKit" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="heliumkit" class="anchor" href="#heliumkit"><span class="octicon octicon-link"></span></a>HeliumKit</h1>
+
+<p><a href="https://travis-ci.org/tanis2000/HeliumKit"><img src="http://img.shields.io/travis/tanis2000/HeliumKit.svg?style=flat" alt="CI Status"></a>
+<a href="http://cocoadocs.org/docsets/HeliumKit"><img src="https://img.shields.io/cocoapods/v/HeliumKit.svg?style=flat" alt="Version"></a>
+<a href="http://cocoadocs.org/docsets/HeliumKit"><img src="https://img.shields.io/cocoapods/l/HeliumKit.svg?style=flat" alt="License"></a>
+<a href="http://cocoadocs.org/docsets/HeliumKit"><img src="https://img.shields.io/cocoapods/p/HeliumKit.svg?style=flat" alt="Platform"></a></p>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>HeliumKit is a lightweight framework that sits between your web services and the business logic of your app.</p>
+
+<p><strong>WARNING!</strong> HeliumKit is still in <strong>alpha</strong> version and API might change any time.</p>
+
+<p>It provides basic mapping to automate conversion from DTO coming from your web services into object models of your business domain. We decided to streamline the process by adopting some libraries and frameworks:</p>
+
+<ul>
+<li>
+<a href="https://github.com/mxcl/PromiseKit">PromiseKit</a> to manage all the async code</li>
+<li>
+<a href="https://github.com/ccgus/fmdb">FMDB</a> to store data in SQLite</li>
+<li>
+<a href="https://github.com/Mantle/Mantle">Mantle</a> to convert models to and from JSON representation</li>
+<li>
+<a href="https://github.com/tanis2000/MTLFMDBAdapter">MTLFMDBAdapter</a> to convert models into SQL statements to feed to FMDB</li>
+<li>
+<a href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a> to manage web service API calls</li>
+</ul><p>The main focus is to keep this framework as lightweight as possible and at the same time make it flexible enough for you to craft the perfect solution to your data transfer and storage layer. Many ideas come from RestKit as I've been using that framework for commercial apps before. But I've never been fond of Core Data as the storage architecture. I'm way too used to good old SQL statements and I can't live with the threading issues that you have to fight against when using Core Data. Core Data is great, but it's not for me.</p>
+
+<p>HeliumKit can simply keep your data in in-memory models or it can write them to SQLite as needed. That's completely configurable. I tried to keep in mind the convention over configuration paradigm as I hate boilerplate code.
+I hope you find this framework just as useful as I do. Contributions and pull requests are welcome!</p>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>HeliumKit is pretty much the result of my frustration with other REST mapping frameworks and Core Data. The article <a href="http://www.objc.io/issue-4/SQLite-instead-of-core-data.html">On Using SQLite and FMDB Instead of Core Data</a> by <a href="http://inessential.com/">Brent Simmons</a> sums up what I think about Core Data and why I try to avoid using it whenever possible. I've also drawn inspiration from that article to come up with the <a href="https://github.com/tanis2000/HeliumKit/blob/develop/Pod/Classes/Database/ALTDatabaseController.h">ALTDatabaseController</a> class. </p>
+
+<h2>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick start</h2>
+
+<p>Here's a quick example of what you can do with HeliumKit.</p>
+
+<h3>
+<a name="your-first-data-provider" class="anchor" href="#your-first-data-provider"><span class="octicon octicon-link"></span></a>Your first data provider</h3>
+
+<p>Create a new provider to read the repository of my user from GitHub. The first thing to do is to create the model:</p>
+
+<p>ALTGHRepo.h</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="cp">#import "MTLModel.h"</span>
+<span class="cp">#import &lt;Mantle/MTLJSONAdapter.h&gt;</span>
+<span class="cp">#import &lt;MTLFMDBAdapter/MTLFMDBAdapter.h&gt;</span>
+
+<span class="k">@interface</span> <span class="nc">ALTGHRepo</span> : <span class="nc">MTLModel</span><span class="o">&lt;</span><span class="n">MTLJSONSerializing</span><span class="p">,</span> <span class="n">MTLFMDBSerializing</span><span class="o">&gt;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSNumber</span> <span class="o">*</span><span class="n">repoId</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">repoName</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">repoUrl</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+<p>ALTGHRepo.m</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="cp">#import "ALTGHRepo.h"</span>
+
+<span class="k">@implementation</span> <span class="nc">ALTGHRepo</span>
+
+<span class="p">+(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">JSONKeyPathsByPropertyKey</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="l">@{</span>
+             <span class="s">@"repoId"</span><span class="o">:</span> <span class="s">@"id"</span><span class="p">,</span>
+             <span class="s">@"repoName"</span><span class="o">:</span> <span class="s">@"name"</span><span class="p">,</span>
+             <span class="s">@"repoUrl"</span><span class="o">:</span> <span class="s">@"url"</span><span class="p">,</span>
+             <span class="l">}</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">+(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">FMDBColumnsByPropertyKey</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="l">@{</span>
+             <span class="s">@"repoId"</span><span class="o">:</span> <span class="s">@"id"</span><span class="p">,</span>
+             <span class="s">@"repoName"</span><span class="o">:</span> <span class="s">@"name"</span><span class="p">,</span>
+             <span class="s">@"repoUrl"</span><span class="o">:</span> <span class="s">@"url"</span><span class="p">,</span>
+             <span class="l">}</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">+(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">FMDBPrimaryKeys</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="l">@[</span><span class="s">@"id"</span><span class="l">]</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">+(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">FMDBTableName</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">@"ghrepo"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</pre></div>
+
+<p>Next you need to create the provider itself:</p>
+
+<p>ALTGHRepoProvider.h</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="cp">#import "ALTBaseProvider.h"</span>
+
+<span class="k">@interface</span> <span class="nc">ALTGHRepoProvider</span> : <span class="nc">ALTBaseProvider</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+<p>ALTGHRepoProvider.m</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="cp">#import "ALTGHRepoProvider.h"</span>
+<span class="cp">#import "ALTGHRepo.h"</span>
+<span class="cp">#import &lt;HeliumKit/ALTObjectMapping.h&gt;</span>
+
+<span class="k">@implementation</span> <span class="nc">ALTGHRepoProvider</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">endPoint</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@"%@%@"</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">baseURL</span><span class="p">,</span> <span class="s">@"/users/tanis2000/repos"</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="n">PMKPromise</span> <span class="o">*</span><span class="p">)</span><span class="nf">fetchObjectsFromDb</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">PMKPromise</span> <span class="nl">new</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">PMKPromiseFulfiller</span> <span class="n">fulfiller</span><span class="p">,</span> <span class="n">PMKPromiseRejecter</span> <span class="n">rejecter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">self</span><span class="p">.</span><span class="n">skipDatabase</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">database</span> <span class="nl">fetch</span><span class="p">:</span><span class="s">@"ghrepo"</span> <span class="nl">returnClass</span><span class="p">:</span><span class="n">ALTGHRepo</span><span class="p">.</span><span class="k">class</span><span class="p">].</span><span class="n">then</span><span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">fulfiller</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">fulfiller</span><span class="p">(</span><span class="nb">nil</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nf">objectMappings</span> <span class="p">{</span>
+    <span class="n">ALTObjectMapping</span> <span class="o">*</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">[</span><span class="n">ALTObjectMapping</span> <span class="nl">mappingForModel</span><span class="p">:</span><span class="n">ALTGHRepo</span><span class="p">.</span><span class="k">class</span> <span class="nl">sourcePath</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+
+    <span class="k">return</span> <span class="l">@[</span><span class="n">mapping</span><span class="l">]</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>To test this, add the following code to your business logic layer:</p>
+
+<div class="highlight highlight-obj-c"><pre><span class="n">ALTDatabaseController</span> <span class="o">*</span><span class="n">_database</span><span class="p">;</span>
+<span class="n">AFHTTPRequestOperationManager</span> <span class="o">*</span><span class="n">_manager</span><span class="p">;</span>
+
+<span class="n">_manager</span> <span class="o">=</span> <span class="p">[</span><span class="n">AFHTTPRequestOperationManager</span> <span class="n">manager</span><span class="p">];</span>
+<span class="n">_manager</span><span class="p">.</span><span class="n">responseSerializer</span> <span class="o">=</span> <span class="p">[</span><span class="n">AFJSONResponseSerializer</span> <span class="n">serializer</span><span class="p">];</span>
+<span class="n">_manager</span><span class="p">.</span><span class="n">requestSerializer</span> <span class="o">=</span> <span class="p">[</span><span class="n">AFJSONRequestSerializer</span> <span class="n">serializer</span><span class="p">];</span>
+<span class="p">[</span><span class="n">_manager</span><span class="p">.</span><span class="n">requestSerializer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36"</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@"User-Agent"</span><span class="p">];</span>
+<span class="p">[</span><span class="n">_manager</span><span class="p">.</span><span class="n">requestSerializer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@"application/json"</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@"Content-Type"</span><span class="p">];</span>
+<span class="p">[</span><span class="n">_manager</span><span class="p">.</span><span class="n">requestSerializer</span> <span class="nl">setValue</span><span class="p">:</span><span class="s">@"application/json"</span> <span class="nl">forHTTPHeaderField</span><span class="p">:</span><span class="s">@"Accept"</span><span class="p">];</span>
+
+<span class="c1">// Grab the Documents folder</span>
+<span class="bp">NSArray</span> <span class="o">*</span><span class="n">paths</span> <span class="o">=</span> <span class="n">NSSearchPathForDirectoriesInDomains</span><span class="p">(</span><span class="n">NSDocumentDirectory</span><span class="p">,</span> <span class="n">NSUserDomainMask</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+<span class="bp">NSString</span> <span class="o">*</span><span class="n">documentsDirectory</span> <span class="o">=</span> <span class="p">[</span><span class="n">paths</span> <span class="nl">objectAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c1">// Sets the database filename</span>
+<span class="bp">NSString</span> <span class="o">*</span><span class="n">filePath</span> <span class="o">=</span> <span class="p">[</span><span class="n">documentsDirectory</span> <span class="nl">stringByAppendingPathComponent</span><span class="p">:</span><span class="s">@"Test.sqlite"</span><span class="p">];</span>
+
+<span class="n">_database</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ALTDatabaseController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithDatabasePath</span><span class="p">:</span><span class="n">filePath</span>
+                                                  <span class="nl">creationBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">FMDatabase</span> <span class="o">*</span><span class="n">db</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">rollback</span><span class="p">)</span> <span class="p">{</span>
+                                                      <span class="p">[</span><span class="n">db</span> <span class="nl">executeUpdate</span><span class="p">:</span><span class="s">@"create table if not exists ghrepo "</span>
+                                                       <span class="s">"(id text unique, name text, url text)"</span><span class="p">];</span>
+                                                  <span class="p">}];</span>
+
+<span class="n">ALTGHRepoProvider</span> <span class="o">*</span><span class="n">provider</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ALTGHRepoProvider</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithDatabaseController</span><span class="p">:</span><span class="n">_database</span> <span class="nl">andRequestOperationManager</span><span class="p">:</span><span class="n">_manager</span> <span class="nl">andBaseURL</span><span class="p">:</span><span class="s">@"https://api.github.com"</span><span class="p">];</span>
+<span class="n">ALTBaseRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ALTBaseRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<span class="n">provider</span><span class="p">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="p">;</span>
+<span class="p">[</span><span class="n">provider</span> <span class="nl">fetchData</span><span class="p">:</span><span class="n">ALTHTTPMethodGET</span><span class="p">].</span><span class="n">then</span><span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="n">cachedData</span><span class="p">,</span> <span class="n">PMKPromise</span> <span class="o">*</span><span class="n">freshData</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// cachedData contains data already in the db</span>
+    <span class="k">return</span> <span class="n">freshData</span><span class="p">;</span>
+<span class="p">}).</span><span class="n">then</span><span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">mappingResult</span><span class="p">,</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="n">freshData</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// freshData contains the data that has been grabbed from the remote service and saved into the database</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"%@"</span><span class="p">,</span> <span class="n">freshData</span><span class="p">);</span>
+<span class="p">}).</span><span class="n">catch</span><span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Failed with error: %@"</span><span class="p">,</span> <span class="p">[</span><span class="n">error</span> <span class="n">localizedDescription</span><span class="p">]);</span>
+<span class="p">});</span>
+
+</pre></div>
+
+<h2>
+<a name="limitations" class="anchor" href="#limitations"><span class="octicon octicon-link"></span></a>Limitations</h2>
+
+<p>HeliumKit isn't a one-stop-do-it-all solution. It does a few things pretty well but that's all there is to it. This is not a full ORM solution nor is it a complete replacement of Core Data.</p>
+
+<p>What HeliumKit does not do:</p>
+
+<ul>
+<li>there's no support for models that are children of other models. The data being loaded from the database is an NSArray of instances of models returned by a SQL query. We're not retrieving associated models. BUT! If you work directly with the data returned by the web service, that data will contain all of the related classes as well.</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To run the example project, clone the repo, and run <code>pod install</code> from the Example directory first.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>HeliumKit is available through <a href="http://cocoapods.org">CocoaPods</a>. To install
+it, simply add the following line to your Podfile:</p>
+
+<pre><code>pod "HeliumKit"
+</code></pre>
+
+<h2>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p>Valerio Santinelli, <a href="mailto:santinelli@altralogica.it">santinelli@altralogica.it</a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>HeliumKit is available under the MIT license. See the LICENSE file for more info.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/tanis2000/HeliumKit/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/tanis2000/HeliumKit/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/tanis2000/HeliumKit"></a> is maintained by <a href="https://github.com/tanis2000">tanis2000</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
