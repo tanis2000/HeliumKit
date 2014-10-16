@@ -99,13 +99,24 @@ typedef void (^ALTDatabaseCompletionBlock)(void);
 
 - (PMKPromise *)rawQuery:(NSString *)stmt parameters:(NSArray *)parameters;
 
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass parameters:(NSArray *)parameters error:(NSError**)outErr;
 - (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass parameters:(NSArray *)parameters;
 
+- (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass error:(NSError**)outErr;
 - (NSArray *)rawQuerySync:(NSString *)stmt returnClass:(Class)returnClass;
 
+- (NSArray *)rawQuerySync:(NSString *)stmt parameters:(NSArray *)parameters error:(NSError**)outErr;
 - (NSArray *)rawQuerySync:(NSString *)stmt parameters:(NSArray *)parameters;
 
+
+- (NSArray *)rawQuerySync:(NSString *)stmt error:(NSError**)outErr;
 - (NSArray *)rawQuerySync:(NSString *)stmt;
+
+
+- (PMKPromise *)insertQuery:(NSString *)stmt parameters:(NSArray *)parameters;
+
+- (NSNumber *)insertQuerySync:(NSString *)stmt parameters:(NSArray *)parameters error:(NSError**)outErr;
+- (NSNumber *)insertQuerySync:(NSString *)stmt parameters:(NSArray *)parameters;
 
 
 @end
