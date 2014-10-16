@@ -218,6 +218,8 @@ describe(@"main tests", ^{
         
     });
 
+    // The following test is meant as a mock-up to test a new feature we're working on. You should be able to retrieve the same structure you downloaded from the web service when accessing the data directly from the database
+    /*
     it(@"can store related json data into db and the data in the db is the same as the one from the web wervice", ^AsyncBlock {
         ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
@@ -251,7 +253,7 @@ describe(@"main tests", ^{
         });
         
     });
-
+     */
     
     it(@"can cancel the last AFNetworking operation", ^AsyncBlock {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
