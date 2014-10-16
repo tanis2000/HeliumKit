@@ -218,6 +218,41 @@ describe(@"main tests", ^{
         
     });
 
+    it(@"can store related json data into db and the data in the db is the same as the one from the web wervice", ^AsyncBlock {
+        ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        __block NSArray *dbData = nil;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            dbData = cachedData;
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", dbData);
+            NSLog(@"%@", freshData);
+            expect(dbData).to.beKindOf(NSArray.class);
+            expect(dbData).to.haveCountOf(2);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData).to.haveCountOf(2);
+            ALTUserWithRepo *secondUser = freshData[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+            __block NSArray *repos;
+            repos = [_database runFetchForClassSync:ALTRepo.class fetchBlock:^FMResultSet *(FMDatabase *database) {
+                return [database executeQuery:@"select * from repository order by id"];
+            }];
+            expect(repos).to.haveCountOf(4);
+            ALTRepo *repo = repos[0];
+            expect(repo.url).to.equal(@"http://www.github.com/tanis2000/repo1");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
+            done();
+        });
+        
+    });
+
+    
     it(@"can cancel the last AFNetworking operation", ^AsyncBlock {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
