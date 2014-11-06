@@ -1,5 +1,7 @@
 Modern development is highly asynchronous: isn’t it about time iOS developers had tools that made programming asynchronously powerful, easy and delightful?
 
+**Vastly, copiously, vigorously documented at [promisekit.org](http://promisekit.org).**
+
 ![PromiseKit](http://promisekit.org/public/img/tight-header.png)
 
 ```objc
@@ -56,7 +58,7 @@ Please be aware that (much like the language) the Swift version is a work in pro
 ```swift
 let sheet = UIAlertView(…)
 sheet.message = "Share photo with your new local bestie?"
-sheet.promise.then { dismissedButtonIndex in
+sheet.promise().then { dismissedButtonIndex in
     if dismissedButtonIndex == alert.cancelButtonIndex
         return
 
@@ -80,7 +82,12 @@ sheet.promise.then { dismissedButtonIndex in
     }.catch { error in
         // because we returned promises in the above handler, any errors
         // that may occur during execution of the chain will be caught here
-        UIAlertView(errors).show()
+        UIAlertView(error).show()
     })
 })
 ```
+
+
+#Donations
+
+PromiseKit is almost completely the work of one man: me; [Max Howell](https://mxcl.github.io). I thoroughly enjoyed making PromiseKit, but nevertheless if you have found it useful then your bitcoin will give me a warm fuzzy feeling from my head right down to my toes: 1JDbV5zuym3jFw4kBCc5Z758maUD8e4dKR.

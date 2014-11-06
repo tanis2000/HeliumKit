@@ -71,6 +71,11 @@ typedef NS_ENUM(NSUInteger, ALTHTTPMethod) {
 @property(nonatomic, readonly) AFHTTPRequestOperationManager *manager;
 
 /**
+ The last AFNetworking `AFHTTPRequestOperation` that has been enqueued for processing. This can be used to cancel the operation.
+ */
+@property(nonatomic, readonly) AFHTTPRequestOperation *lastOperation;
+
+/**
  The base URL of the service being called
  */
 @property(nonatomic, strong, readonly) NSString *baseURL;

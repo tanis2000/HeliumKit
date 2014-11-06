@@ -24,7 +24,14 @@
     if (count == 0)
         return [PMKPromise promiseWithValue:@[]];
 
+    // Keep a reference to the newly created
+    // promise so we can check if it's resolved
+    // when one of the passed in promises fails.
+    __block PMKPromise *newPromise = nil;
+
     #define rejecter(key) ^(NSError *err){ \
+        if (newPromise.resolved) \
+            return; \
         id userInfo = err.userInfo.mutableCopy; \
         userInfo[PMKFailingPromiseIndexKey] = key; \
         err = [NSError errorWithDomain:err.domain code:err.code userInfo:userInfo]; \
@@ -32,7 +39,7 @@
     }
 
     if ([promises isKindOfClass:[NSDictionary class]])
-        return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter){
+        return newPromise = [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter){
             NSMutableDictionary *results = [NSMutableDictionary new];
             for (id key in promises) {
                 PMKPromise *promise = promises[key];
@@ -48,8 +55,20 @@
             }
         }];
 
-    return [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter){
-        NSPointerArray *results = [NSPointerArray strongObjectsPointerArray];
+    return newPromise = [PMKPromise new:^(PMKPromiseFulfiller fulfiller, PMKPromiseRejecter rejecter){
+        NSPointerArray *results = nil;
+      #if TARGET_OS_IPHONE
+        results = [NSPointerArray strongObjectsPointerArray];
+      #else
+        if ([[NSPointerArray class] respondsToSelector:@selector(strongObjectsPointerArray)]) {
+            results = [NSPointerArray strongObjectsPointerArray];
+        } else {
+          #pragma clang diagnostic push
+          #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            results = [NSPointerArray pointerArrayWithStrongObjects];
+          #pragma clang diagnostic pop
+        }
+      #endif
         results.count = count;
 
         NSUInteger ii = 0;

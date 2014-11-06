@@ -147,6 +147,9 @@
         return arr;
     } else if ([startData isKindOfClass:[NSNull class]]) {
         return nil;
+    } else if ([startData isKindOfClass:[NSString class]]) {
+        // XXX: we cannot save this as a model in the database as of yet. We return it.
+        return startData;
     } else {
         NSAssert(NO, @"Unrecognized class for JSON response");
     }

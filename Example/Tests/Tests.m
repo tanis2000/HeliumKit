@@ -43,7 +43,7 @@ describe(@"main tests", ^{
         _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
                                                           creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists user "
-                                                               "(userId text unique, name text, email text)"];
+                                                               "(pk integer primary key , userId text unique, name text, email text)"];
                                                               [db executeUpdate:@"create table if not exists repository "
                                                                "(id text unique, userId text, url text)"];
                                                           }];
@@ -218,7 +218,90 @@ describe(@"main tests", ^{
         
     });
 
-
+    // The following test is meant as a mock-up to test a new feature we're working on. You should be able to retrieve the same structure you downloaded from the web service when accessing the data directly from the database
+    /*
+    it(@"can store related json data into db and the data in the db is the same as the one from the web wervice", ^AsyncBlock {
+        ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        __block NSArray *dbData = nil;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            dbData = cachedData;
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", dbData);
+            NSLog(@"%@", freshData);
+            expect(dbData).to.beKindOf(NSArray.class);
+            expect(dbData).to.haveCountOf(2);
+            expect(freshData).to.beKindOf(NSArray.class);
+            expect(freshData).to.haveCountOf(2);
+            ALTUserWithRepo *secondUser = freshData[1];
+            expect(secondUser.name).to.equal(@"Steve Jobs");
+            __block NSArray *repos;
+            repos = [_database runFetchForClassSync:ALTRepo.class fetchBlock:^FMResultSet *(FMDatabase *database) {
+                return [database executeQuery:@"select * from repository order by id"];
+            }];
+            expect(repos).to.haveCountOf(4);
+            ALTRepo *repo = repos[0];
+            expect(repo.url).to.equal(@"http://www.github.com/tanis2000/repo1");
+            done();
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error).to.beNil();
+            done();
+        });
+        
+    });
+     */
+    
+    it(@"can cancel the last AFNetworking operation", ^AsyncBlock {
+        ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
+        ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
+        provider.request = request;
+        [provider fetchData:ALTHTTPMethodGET].then(^(NSArray *cachedData, PMKPromise *freshData) {
+            // cachedData contains data already in the db
+            return freshData;
+        }).then(^(id mappingResult, NSArray *freshData) {
+            NSLog(@"%@", freshData);
+        }).catch(^(NSError *error) {
+            NSLog(@"Failed with error: %@", [error localizedDescription]);
+            expect(error.code).to.equal(-999);
+            done();
+        });
+        [provider.lastOperation cancel];
+        expect(provider.lastOperation.isCancelled).to.beTruthy();
+        
+    });
+    
+    
+    it(@"Can insert new row whit Promise", ^AsyncBlock
+    {
+        PMKPromise * promise =[_database insertQuery:@"insert into user (userid, name, email) values (?, ?, ?)"
+                                          parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]];
+        promise.then(^(NSNumber*num)
+                     {
+                         expect(num.integerValue).to.beGreaterThan(0);
+                         done();
+                     }).catch(^(NSError *error) {
+                         NSLog(@"Failed with error: %@", [error localizedDescription]);
+                         expect(error.code).to.equal(-999);
+                         done();
+                     });
+    });
+    
+    it(@"Can insert new row", ^AsyncBlock
+    {
+        NSError *error = nil;
+        NSNumber* pk = [_database insertQuerySync:@"insert into user (userid, name, email) values (?, ?, ?)"
+                                       parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]
+                                            error:&error];
+        
+        expect(pk.integerValue).to.beGreaterThan(0);
+        expect(error).to.beNil();
+        done();
+    });
+    
 });
 
 
