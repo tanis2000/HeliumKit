@@ -1,5 +1,6 @@
 # reference: http://www.objc.io/issue-6/travis-ci.html
 
+osx_image: xcode7.3
 language: objective-c
 node_js:
 - 0.10
