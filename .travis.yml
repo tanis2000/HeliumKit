@@ -1,12 +1,16 @@
 # reference: http://www.objc.io/issue-6/travis-ci.html
-
+# additional fixes: https://github.com/travis-ci/travis-ci/issues/5743
+os: osx
+osx_image: xcode7.3
 language: objective-c
 node_js:
 - 0.10
 script:
+- set -o pipefail
 - ./start_server.sh
-- xctool test -workspace Example/HeliumKit.xcworkspace -scheme HeliumKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+- xcodebuild clean test -workspace Example/HeliumKit.xcworkspace -scheme HeliumKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty
 # fix for https://github.com/travis-ci/travis-ci/issues/2836
 before_install:
   - brew update
   - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
+  - gem install xcpretty -N --no-ri --no-rdoc
