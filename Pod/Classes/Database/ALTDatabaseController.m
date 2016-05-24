@@ -102,6 +102,7 @@
     while ([resultSet next]) {
         NSError *error = nil;
         id obj = [MTLFMDBAdapter modelOfClass:class fromFMResultSet:resultSet error:&error];
+        NSAssert(obj != nil, @"MTLFMDBAdapter returned nil while mapping a model to class %@. Internal error:%@", class, error.localizedDescription);
         [s addObject:obj];
     }
     return s;

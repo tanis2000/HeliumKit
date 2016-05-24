@@ -9,6 +9,7 @@
 #import "ALTGHRepoProvider.h"
 #import "ALTGHRepo.h"
 #import <HeliumKit/ALTObjectMapping.h>
+#import <HeliumKit/ALTDatabaseController.h>
 
 @implementation ALTGHRepoProvider
 

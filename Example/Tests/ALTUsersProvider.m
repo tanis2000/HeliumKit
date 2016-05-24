@@ -9,6 +9,7 @@
 #import "ALTUsersProvider.h"
 #import "ALTUser.h"
 #import <HeliumKit/ALTObjectMapping.h>
+#import <HeliumKit/ALTDatabaseController.h>
 
 @implementation ALTUsersProvider
 

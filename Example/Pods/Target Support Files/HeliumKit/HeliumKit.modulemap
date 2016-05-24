@@ -1,0 +1,6 @@
+framework module HeliumKit {
+  umbrella header "HeliumKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -12,6 +12,7 @@
 #import <HeliumKit/ALTObjectMapping.h>
 #import <HeliumKit/ALTRelationshipMapping.h>
 #import <HeliumKit/ALTRelationshipKeyMapping.h>
+#import <HeliumKit/ALTDatabaseController.h>
 
 @implementation ALTUserWithRepoProvider
 
