@@ -331,7 +331,7 @@ describe(@"GitHub API tests", ^{
         [_manager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [_manager.requestSerializer setValue:@"token cfeea73a39997618b8315b41d82115f2a4bf9684" forHTTPHeaderField:@"Authorization"];
+        [_manager.requestSerializer setValue:@"token 0d8ccc304223565cf382aec4700f413815dcfc1a" forHTTPHeaderField:@"Authorization"];
         
         // Grab the Documents folder
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
