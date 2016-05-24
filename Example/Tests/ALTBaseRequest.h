@@ -7,6 +7,7 @@
 //
 
 #import "MTLModel.h"
+#import <Mantle/Mantle.h>
 #import <Mantle/MTLJSONAdapter.h>
 
 @interface ALTBaseRequest : MTLModel<MTLJSONSerializing>

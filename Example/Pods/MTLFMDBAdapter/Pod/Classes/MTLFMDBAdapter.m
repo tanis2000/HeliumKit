@@ -120,7 +120,11 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 		id value;
 		@try {
             if ([attributes->objectClass isSubclassOfClass:[NSNumber class]]) {
-                value = [NSNumber numberWithDouble:[[resultSet stringForColumn:columnName] doubleValue]];
+                NSString *stringForColumn = [resultSet stringForColumn:columnName];
+                if(stringForColumn)
+                    value = [NSNumber numberWithDouble:[stringForColumn doubleValue]];
+            } else if ([attributes->objectClass isSubclassOfClass:[NSData class]]) {
+                value = [resultSet dataForColumn:columnName];
             } else {
                 value = [resultSet stringForColumn:columnName];
             }
@@ -288,11 +292,17 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
     NSMutableArray *values = [NSMutableArray array];
     for (NSString *propertyKey in Keys)
     {
-		NSString *keyPath = columns[propertyKey];
+      NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
-            [values addObject:[dictionaryValue valueForKey:propertyKey]];
+            id v = [dictionaryValue valueForKey:propertyKey];
+            if (v == nil) {
+                NSLog(@"Warning: value for key %@ is nil", propertyKey);
+                v = [NSNull null];
+            }
+            [values addObject:v];
         }
     }
     return values;
@@ -307,6 +317,7 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 	for (NSString *propertyKey in Keys)
     {
 		NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
         
         if (keyPath != nil && ![keyPath isEqual:[NSNull null]])
         {
@@ -321,6 +332,31 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
 }
 
 + (NSString *)updateStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
+    NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
+	NSSet *propertyKeys = [model.class propertyKeys];
+    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
+    NSMutableArray *stats = [NSMutableArray array];
+	for (NSString *propertyKey in Keys) {
+		NSString *keyPath = columns[propertyKey];
+        keyPath = keyPath ? : propertyKey;
+        
+        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
+            NSString *s = [NSString stringWithFormat:@"%@ = ?", keyPath];
+            [stats addObject:s];
+        }
+    }
+    
+    return [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [self whereStatementForModel:model]];
+}
+
++ (NSString *)deleteStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
+    NSParameterAssert([model.class conformsToProtocol:@protocol(MTLFMDBSerializing)]);
+    
+    return [NSString stringWithFormat:@"delete from %@ where %@", [model.class FMDBTableName], [self whereStatementForModel:model]];
+}
+
++ (NSString *)whereStatementForModel:(MTLModel<MTLFMDBSerializing> *)model
+{
     // Build the where statement
     NSArray *keys = [model.class FMDBPrimaryKeys];
     NSMutableArray *where = [NSMutableArray array];
@@ -328,38 +364,8 @@ static NSString * const MTLFMDBAdapterThrownExceptionErrorKey = @"MTLFMDBAdapter
         NSString *s = [NSString stringWithFormat:@"%@ = ?", key];
         [where addObject:s];
     }
-
-    NSDictionary *columns = [model.class FMDBColumnsByPropertyKey];
-	NSSet *propertyKeys = [model.class propertyKeys];
-    NSArray *Keys = [[propertyKeys allObjects] sortedArrayUsingSelector:@selector(compare:)];
-    NSMutableArray *stats = [NSMutableArray array];
-	for (NSString *propertyKey in Keys) {
-		NSString *keyPath = columns[propertyKey];
-        if (keyPath != nil && ![keyPath isEqual:[NSNull null]]) {
-            NSString *s = [NSString stringWithFormat:@"%@ = ?", keyPath];
-            [stats addObject:s];
-        }
-    }
-    
-    NSString *statement = [NSString stringWithFormat:@"update %@ set %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@", "], [where componentsJoinedByString:@", "]];
-    
-    return statement;
+    return [where componentsJoinedByString:@" AND "];
 }
-
-+ (NSString *)deleteStatementForModel:(MTLModel<MTLFMDBSerializing> *)model {
-    NSParameterAssert([model.class conformsToProtocol:@protocol(MTLFMDBSerializing)]);
-    
-    NSArray *keys = [model.class FMDBPrimaryKeys];
-    NSMutableArray *stats = [NSMutableArray array];
-    for (NSString *key in keys) {
-        NSString *s = [NSString stringWithFormat:@"%@ = ?", key];
-        [stats addObject:s];
-    }
-    NSString *statement = [NSString stringWithFormat:@"delete from %@ where %@", [model.class FMDBTableName], [stats componentsJoinedByString:@" AND "]];
-    
-    return statement;
-}
-
 
 
 @end

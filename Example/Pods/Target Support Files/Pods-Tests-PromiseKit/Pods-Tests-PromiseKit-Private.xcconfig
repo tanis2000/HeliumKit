@@ -1,5 +1,0 @@
-#include "Pods-Tests-PromiseKit.xcconfig"
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 ${PODS_TESTS_PROMISEKIT_GCC_PREPROCESSOR_DEFINITIONS}
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/PromiseKit" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Expecta" "${PODS_ROOT}/Headers/Public/Expecta+Snapshots" "${PODS_ROOT}/Headers/Public/FBSnapshotTestCase" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/HeliumKit" "${PODS_ROOT}/Headers/Public/MTLFMDBAdapter" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/PromiseKit" "${PODS_ROOT}/Headers/Public/Specta"
-OTHER_LDFLAGS = ${PODS_TESTS_PROMISEKIT_OTHER_LDFLAGS} -ObjC
-PODS_ROOT = ${SRCROOT}

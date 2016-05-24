@@ -9,6 +9,7 @@
 #import "ALTCachedUsersProvider.h"
 #import "ALTUser.h"
 #import <HeliumKit/ALTObjectMapping.h>
+#import <HeliumKit/ALTDatabaseController.h>
 #import "ALTCachedResponse.h"
 
 @implementation ALTCachedUsersProvider

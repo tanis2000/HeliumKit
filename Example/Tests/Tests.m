@@ -57,7 +57,8 @@ describe(@"main tests", ^{
         }];
     });
 
-    it(@"can store json into db", ^AsyncBlock {
+    it(@"can store json into db", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -76,10 +77,12 @@ describe(@"main tests", ^{
             expect(error).to.beNil();
             done();
         });
+        });
 
     });
     
-    it(@"can store and retrieve a class from the database", ^AsyncBlock {
+    it(@"can store and retrieve a class from the database", ^ {
+        waitUntil(^(DoneCallback done) {
         [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
             [database executeUpdate:@"insert into user (userid, name, email) values (?, ?, ?)" withArgumentsInArray:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]];
             *rollback = NO;
@@ -99,10 +102,12 @@ describe(@"main tests", ^{
                 expect(user.name).to.equal(@"Valerio Santinelli");
             }
             done();
-        });;
+        });
+        });
     });
     
-    it(@"can load json with the POST method", ^AsyncBlock {
+    it(@"can load json with the POST method", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -121,10 +126,11 @@ describe(@"main tests", ^{
             expect(error).to.beNil();
             done();
         });
-        
+        });
     });
 
-    it(@"can load a json without storing it in the database", ^AsyncBlock {
+    it(@"can load a json without storing it in the database", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:nil andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -147,11 +153,12 @@ describe(@"main tests", ^{
             expect(error).to.beNil();
             done();
         });
-        
+        });
     });
     
     
-    it(@"can store a json into db and cache the next request", ^AsyncBlock {
+    it(@"can store a json into db and cache the next request", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTCachedUsersProvider *provider = [[ALTCachedUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -186,10 +193,11 @@ describe(@"main tests", ^{
             expect(error).to.beNil();
             done();
         });
-        
+        });
     });
     
-    it(@"can store related json data into db", ^AsyncBlock {
+    it(@"can store related json data into db", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -214,6 +222,7 @@ describe(@"main tests", ^{
             NSLog(@"Failed with error: %@", [error localizedDescription]);
             expect(error).to.beNil();
             done();
+        });
         });
         
     });
@@ -255,7 +264,8 @@ describe(@"main tests", ^{
     });
      */
     
-    it(@"can cancel the last AFNetworking operation", ^AsyncBlock {
+    it(@"can cancel the last AFNetworking operation", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -271,12 +281,13 @@ describe(@"main tests", ^{
         });
         [provider.lastOperation cancel];
         expect(provider.lastOperation.isCancelled).to.beTruthy();
-        
+        });
     });
     
     
-    it(@"Can insert new row whit Promise", ^AsyncBlock
+    it(@"Can insert new row whit Promise", ^
     {
+        waitUntil(^(DoneCallback done) {
         PMKPromise * promise =[_database insertQuery:@"insert into user (userid, name, email) values (?, ?, ?)"
                                           parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]];
         promise.then(^(NSNumber*num)
@@ -288,10 +299,12 @@ describe(@"main tests", ^{
                          expect(error.code).to.equal(-999);
                          done();
                      });
+        });
     });
     
-    it(@"Can insert new row", ^AsyncBlock
+    it(@"Can insert new row", ^
     {
+        waitUntil(^(DoneCallback done) {
         NSError *error = nil;
         NSNumber* pk = [_database insertQuerySync:@"insert into user (userid, name, email) values (?, ?, ?)"
                                        parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]
@@ -300,6 +313,7 @@ describe(@"main tests", ^{
         expect(pk.integerValue).to.beGreaterThan(0);
         expect(error).to.beNil();
         done();
+        });
     });
     
 });
@@ -339,7 +353,8 @@ describe(@"GitHub API tests", ^{
         }];
     });
     
-    it(@"can store the list of my repos into db", ^AsyncBlock {
+    it(@"can store the list of my repos into db", ^ {
+        waitUntil(^(DoneCallback done) {
         ALTGHRepoProvider *provider = [[ALTGHRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"https://api.github.com"];
         ALTBaseRequest *request = [[ALTBaseRequest alloc] init];
         provider.request = request;
@@ -358,7 +373,7 @@ describe(@"GitHub API tests", ^{
             expect(error).to.beNil();
             done();
         });
-        
+        });
     });
     
 });

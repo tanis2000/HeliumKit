@@ -1,50 +1,44 @@
 PODS:
-  - AFNetworking (2.4.1):
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.4.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.4.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.4.1)
-  - AFNetworking/Security (2.4.1)
-  - AFNetworking/Serialization (2.4.1)
-  - AFNetworking/UIKit (2.4.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-  - Expecta (0.3.1)
-  - Expecta+Snapshots (1.2.1):
-    - Expecta
-    - FBSnapshotTestCase
-  - FBSnapshotTestCase (1.2)
-  - FMDB (2.4):
-    - FMDB/standard
-  - FMDB/common (2.4)
-  - FMDB/standard (2.4):
-    - FMDB/common
-  - HeliumKit (0.1.3):
+  - Expecta (1.0.5)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - HeliumKit (0.2.0):
     - AFNetworking (~> 2.3)
     - FMDB (~> 2.3)
-    - Mantle (~> 1.5)
-    - MTLFMDBAdapter (~> 0.1)
+    - Mantle (~> 2.0)
+    - MTLFMDBAdapter (~> 0.2)
     - PromiseKit/Pause (~> 0.9)
     - PromiseKit/Promise (~> 0.9)
     - PromiseKit/Until (~> 0.9)
     - PromiseKit/When (~> 0.9)
-  - Mantle (1.5.1):
-    - Mantle/extobjc
-  - Mantle/extobjc (1.5.1)
-  - MTLFMDBAdapter (0.1.4):
+  - Mantle (2.0.7):
+    - Mantle/extobjc (= 2.0.7)
+  - Mantle/extobjc (2.0.7)
+  - MTLFMDBAdapter (0.2.2):
     - FMDB (~> 2.3)
-    - Mantle (~> 1.5)
+    - Mantle (~> 2.0)
   - PromiseKit/Pause (0.9.21):
     - PromiseKit/Promise
   - PromiseKit/Promise (0.9.21)
@@ -53,29 +47,27 @@ PODS:
     - PromiseKit/When
   - PromiseKit/When (0.9.21):
     - PromiseKit/Promise
-  - Specta (0.2.1)
+  - Specta (1.0.5)
 
 DEPENDENCIES:
-  - Expecta
-  - Expecta+Snapshots
-  - FBSnapshotTestCase
+  - Expecta (~> 1.0)
   - HeliumKit (from `../`)
-  - Specta (~> 0.2)
+  - Specta (~> 1.0)
 
 EXTERNAL SOURCES:
   HeliumKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
-  Expecta+Snapshots: 30c28e3d8104665ee70e32df1cfc030bb37a8a6c
-  FBSnapshotTestCase: 4159bdf235fdae25aa7d813f1452a4f05ad4f9cd
-  FMDB: 0b2fa25e5264ef177973c0cb8c02c711107979aa
-  HeliumKit: 3eac17f1a787942879ee7df58b9a35a96711bad1
-  Mantle: d7c5ac734579ec751c58fecbf56189853056c58c
-  MTLFMDBAdapter: 86dd931f9e0bb9ec64ee692320546a9202a8689c
-  PromiseKit: 7dc63509abccf017f77fdccc4eef4bcd5762d9e5
-  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  HeliumKit: 81fc1bbcb9e9cef336fbc086ad94dafc7aa599d1
+  Mantle: bc40bb061d8c2c6fb48d5083e04d928c3b7f73d9
+  MTLFMDBAdapter: 8396bb1c357bd9f77649c40993a1e64dc0bada26
+  PromiseKit: 9f28ddb5d13c31a9e7e3ccaacd8732972de1d847
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-COCOAPODS: 0.34.2
+PODFILE CHECKSUM: cd6580d122d2a3ecfd725f438538d6f609dbd902
+
+COCOAPODS: 1.0.0
