@@ -8,7 +8,7 @@ node_js:
 script:
 - set -o pipefail
 - ./start_server.sh
-- xcodebuild clean test -workspace Example/HeliumKit.xcworkspace -scheme HeliumKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty
+- xcodebuild clean test -workspace Example/HeliumKit.xcworkspace -scheme HeliumKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS GH_TOKEN=${GH_TOKEN}' | xcpretty
 # fix for https://github.com/travis-ci/travis-ci/issues/2836
 before_install:
   - brew update
