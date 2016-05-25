@@ -32,14 +32,14 @@ describe(@"main tests", ^{
         [_manager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        
+
         // Grab the Documents folder
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        
+
         // Sets the database filename
         NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Test.sqlite"];
-        
+
         _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
                                                           creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists user "
@@ -47,7 +47,7 @@ describe(@"main tests", ^{
                                                               [db executeUpdate:@"create table if not exists repository "
                                                                "(id text unique, userId text, url text)"];
                                                           }];
-        
+
     });
 
     afterEach(^{
@@ -80,7 +80,7 @@ describe(@"main tests", ^{
         });
 
     });
-    
+
     it(@"can store and retrieve a class from the database", ^ {
         waitUntil(^(DoneCallback done) {
         [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
@@ -105,7 +105,7 @@ describe(@"main tests", ^{
         });
         });
     });
-    
+
     it(@"can load json with the POST method", ^ {
         waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
@@ -155,8 +155,8 @@ describe(@"main tests", ^{
         });
         });
     });
-    
-    
+
+
     it(@"can store a json into db and cache the next request", ^ {
         waitUntil(^(DoneCallback done) {
         ALTCachedUsersProvider *provider = [[ALTCachedUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
@@ -195,7 +195,7 @@ describe(@"main tests", ^{
         });
         });
     });
-    
+
     it(@"can store related json data into db", ^ {
         waitUntil(^(DoneCallback done) {
         ALTUserWithRepoProvider *provider = [[ALTUserWithRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
@@ -224,7 +224,7 @@ describe(@"main tests", ^{
             done();
         });
         });
-        
+
     });
 
     // The following test is meant as a mock-up to test a new feature we're working on. You should be able to retrieve the same structure you downloaded from the web service when accessing the data directly from the database
@@ -260,10 +260,10 @@ describe(@"main tests", ^{
             expect(error).to.beNil();
             done();
         });
-        
+
     });
      */
-    
+
     it(@"can cancel the last AFNetworking operation", ^ {
         waitUntil(^(DoneCallback done) {
         ALTUsersProvider *provider = [[ALTUsersProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"http://localhost:4567/"];
@@ -283,8 +283,8 @@ describe(@"main tests", ^{
         expect(provider.lastOperation.isCancelled).to.beTruthy();
         });
     });
-    
-    
+
+
     it(@"Can insert new row whit Promise", ^
     {
         waitUntil(^(DoneCallback done) {
@@ -301,7 +301,7 @@ describe(@"main tests", ^{
                      });
         });
     });
-    
+
     it(@"Can insert new row", ^
     {
         waitUntil(^(DoneCallback done) {
@@ -309,13 +309,13 @@ describe(@"main tests", ^{
         NSNumber* pk = [_database insertQuerySync:@"insert into user (userid, name, email) values (?, ?, ?)"
                                        parameters:@[[NSNumber numberWithInt:999], @"Valerio Santinelli", @"email@provider.com"]
                                             error:&error];
-        
+
         expect(pk.integerValue).to.beGreaterThan(0);
         expect(error).to.beNil();
         done();
         });
     });
-    
+
 });
 
 
@@ -331,29 +331,34 @@ describe(@"GitHub API tests", ^{
         [_manager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [_manager.requestSerializer setValue:@"token 0d8ccc304223565cf382aec4700f413815dcfc1a" forHTTPHeaderField:@"Authorization"];
-        
+#ifdef GH_TOKEN
+        NSString *token = [NSString stringWithFormat:@"token %s", xstr(GH_TOKEN)];
+        [_manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+#else
+        #warning GH_TOKEN is not defined
+#endif
+
         // Grab the Documents folder
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        
+
         // Sets the database filename
         NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Test.sqlite"];
-        
+
         _database = [[ALTDatabaseController alloc] initWithDatabasePath:filePath
                                                           creationBlock:^(FMDatabase *db, BOOL *rollback) {
                                                               [db executeUpdate:@"create table if not exists ghrepo "
                                                                "(id text unique, name text, url text)"];
                                                           }];
-        
+
     });
-    
+
     afterEach(^{
         [_database runDatabaseBlockInTransaction:^(FMDatabase *database, BOOL *rollback) {
             //[database executeUpdate:@"drop table if exists ghrepo"];
         }];
     });
-    
+
     it(@"can store the list of my repos into db", ^ {
         waitUntil(^(DoneCallback done) {
         ALTGHRepoProvider *provider = [[ALTGHRepoProvider alloc] initWithDatabaseController:_database andRequestOperationManager:_manager andBaseURL:@"https://api.github.com"];
@@ -376,6 +381,6 @@ describe(@"GitHub API tests", ^{
         });
         });
     });
-    
+
 });
 SpecEnd
